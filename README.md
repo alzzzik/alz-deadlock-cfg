@@ -48,7 +48,7 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
 
 ## Credits
 
-- **liv**: the original cfg this one started from.
+- **liv** ([7liv/compylock](https://github.com/7liv/compylock)): the original cfg this one started from.
 - [dacooderr / OptiLock](https://github.com/dacooderr/OptiLock): used as the mod-compatible reference.
 - [Sqooky / OptimizationLock](https://github.com/Sqooky/OptimizationLock): the config family liv's cfg comes from.
 
