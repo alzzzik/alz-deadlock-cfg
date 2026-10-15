@@ -1,4 +1,4 @@
-// alz deadlock cfg - experimental (slightly lower FPS than stable). GPL-3.0
+// alz deadlock cfg - experimental: stable + community-consensus convars. github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -433,8 +433,8 @@ GameInfo
 //[mods] AggregateRTProxyDesc       "1"    
 //[mods] AggregateSceneObjectDesc   "1"    
 //[mods] AggregateVertexColorStream "1"    
-        EnvironmentMapCacheSize    "1024" 
-        LPVEdgeBlending            "0"    
+//[mods] EnvironmentMapCacheSize    "1024" 
+//[mods] LPVEdgeBlending            "0"    
 
     }
 
@@ -452,8 +452,8 @@ GameInfo
         FrameBufferCopyFormat                       "R11G11B10F" 
         GpuLightBinner                              "1"          
         GpuLightBinnerSunLightFastPath              "1"          
-        HDRFrameBuffer                              "0"          
-        LayerBatchThresholdFullsort                 "200"        
+//[mods] HDRFrameBuffer                              "0"          
+//[mods] LayerBatchThresholdFullsort                 "200"        
 //[mods] MinimumLateAllocatedVertexCacheBufferSizeMB "64"         
         NonTexturedGradientFog                      "0"          
         SunLightManagerCount                        "0"          
@@ -521,11 +521,11 @@ GameInfo
         Float16HDRBackBuffer                 "1"
         PET_SupportFadingOpaqueModels        "1"
 
-        EnableMixedResolution         "1" 
+//[mods] EnableMixedResolution         "1" 
 //[mods] MPropertyFlattenIntoParentRow "1"
 //[mods] ParticleTraceOffsetOnlyHit    "1"
-        ParticlesFoggedByDefault      "0"
-        PerVertexLighting             "0"
+//[mods] ParticlesFoggedByDefault      "0"
+//[mods] PerVertexLighting             "0"
 //[mods] PostSimulate                  "0"
     }
 
@@ -617,7 +617,7 @@ GameInfo
         r_citadel_ssao_quality                      "0"    
         r_citadel_ssao_thin_occluder_compensation   "0"    
         r_citadel_sun_shadow_slope_scale_depth_bias "0"    
-        r_distancefield_enable                      "1"    
+        r_distancefield_enable                      "0"    
         r_lightmap_bicubic_filtering                "1"    
         r_lightmap_size                             "2048" 
         r_lightmap_size_directional_irradiance      "0"    
@@ -662,7 +662,7 @@ GameInfo
         r_particle_model_per_thread_count        "64"      
         r_particle_skip_postsim                  "true"    
         r_physics_particle_op_spawn_scale        "0"       
-//[mods] r_update_particles_on_render_only_frames "true"    
+        r_update_particles_on_render_only_frames "true"    
         r_world_wind_strength                    "0"       
         phys_cull_internal_mesh_contacts        "true"  
         sc_aggregate_bvh_threshold              "256"    
@@ -884,6 +884,40 @@ GameInfo
         cl_updaterate                "128"
         sv_parallel_checktransmit    "2"
         net_gather_child_fields_only "1"
+
+        // --- alz: community-consensus additions (OptimizationLock + OptiLock families) ---
+        csm_max_num_cascades_override                 "0"  // shadows
+        csm_res_override_0                            "1"  // shadows
+        csm_res_override_1                            "1"  // shadows
+        csm_res_override_2                            "1"  // shadows
+        csm_res_override_3                            "1"  // shadows
+        csm_max_dist_between_caster_and_receiver      "0"  // shadows
+        lb_csm_cross_fade_override                    "0"  // shadows
+        lb_csm_distance_fade_override                 "0"  // shadows
+        lb_dynamic_shadow_penumbra                    "false"  // shadows
+        lb_dynamic_shadow_resolution                  "false"  // shadows
+        lb_dynamic_shadow_resolution_quantization     "32"  // shadows
+        lb_precomputed_shadowmap_enable               "false"  // shadows
+        r_citadel_distancefield_shadows               "false"  // shadows
+        r_hair_shadowtile                             "false"  // shadows
+        lb_cubemap_normalization_roughness_begin      "0.01"  // lighting
+        r_directional_lightmaps                       "false"  // lighting
+        r_light_flickering_enabled                    "false"  // lighting
+        r_ssao_blur                                   "false"  // post
+        mat_tonemap_bloom_scale                       "0"  // post
+        volume_fog_enable_jitter                      "false"  // post
+        r_hair_indirect_transmittance                 "false"  // models
+        r_smooth_morph_normals                        "false"  // models
+        r_morphing_enabled                            "false"  // models
+        animgraph_footlock_enabled                    "false"  // animation
+        animgraph_slowdownonslopes_enabled            "false"  // animation
+        fx_drawmetalspark                             "false"  // particles
+        r_world_wind_frequency_grass                  "0"  // world
+        r_world_wind_frequency_trees                  "0"  // world
+        panorama_disable_blur                         "true"  // ui
+        panorama_allow_transitions                    "false"  // ui
+        panorama_disable_box_shadow                   "true"  // ui
+
     }
 
     Memory
