@@ -1,4 +1,4 @@
-// alz deadlock cfg - experimental: stable + community-consensus convars. github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - experimental: stable + consensus convars (r2) + stutter fixes (r3). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -547,7 +547,7 @@ GameInfo
         lb_enable_dynamic_lights                 "true" 
         r_citadel_enable_pano_world_blur         "true"  
 //[mods] r_particle_explicit_fetch                "false" 
-        r_particle_max_size_cull                 "600"   
+//[r3] r_particle_max_size_cull                 "600"   
         r_size_cull_threshold                    "0.9"   
         sc_screen_size_lod_scale_override        "0.55"  
         steam_inputhandler_enabled               "false" 
@@ -591,8 +591,8 @@ GameInfo
         citadel_tightcamera_alternative         "1"
         nav_edit_use_camera                     "0"
         rpg_camera_yaw                          "0"
-        r_texture_budget_threshold     "0.7" 
-        r_texture_budget_update_period "0.5" 
+//[r3] r_texture_budget_threshold     "0.7" 
+//[r3] r_texture_budget_update_period "0.5" 
         r_texture_stream_mip_bias      "3"   
         r_texturefilteringquality      "5"   
         thread_pool_option "2"
@@ -653,7 +653,7 @@ GameInfo
         cl_particle_batch_mode                   "1"       
         r_citadel_screenspace_particles_full_res "true"    
 //[mods] r_draw_particle_children_with_parents    "1"       
-        r_limit_particle_job_duration            "true"    
+//[r3] r_limit_particle_job_duration            "true"    
 //[mods] r_particle_allowprerender                "true"    
         r_particle_batch_collections             "true"    
 //[mods] r_particle_fixedrandomseeds              "true"    
@@ -665,12 +665,12 @@ GameInfo
         r_update_particles_on_render_only_frames "true"    
         r_world_wind_strength                    "0"       
         phys_cull_internal_mesh_contacts        "true"  
-        sc_aggregate_bvh_threshold              "256"    
+//[r3] sc_aggregate_bvh_threshold              "256"    
         sc_allow_dithered_lod                   "false" 
         sc_fade_distance_scale_override         "100"   
         sc_instanced_mesh_motion_vectors        "0"     
         sc_instanced_mesh_size_cull_bias_shadow "10"    
-        sc_layer_batch_threshold                "256"   
+//[r3] sc_layer_batch_threshold                "256"   
         sc_layer_batch_threshold_fullsort       "120"   
 //[mods] citadel_video_preset          "9"     
         r_citadel_gpu_culling         "true"  
@@ -909,8 +909,6 @@ GameInfo
         r_hair_indirect_transmittance                 "false"  // models
         r_smooth_morph_normals                        "false"  // models
         r_morphing_enabled                            "false"  // models
-        animgraph_footlock_enabled                    "false"  // animation
-        animgraph_slowdownonslopes_enabled            "false"  // animation
         fx_drawmetalspark                             "false"  // particles
         r_world_wind_frequency_grass                  "0"  // world
         r_world_wind_frequency_trees                  "0"  // world

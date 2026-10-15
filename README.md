@@ -10,7 +10,10 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 | Folder | Status |
 |---|---|
 | `stable/gameinfo.gi` | **Use this one.** Works with mods. Best FPS so far. |
-| `experimental/gameinfo.gi` | Testing ground. Round 2: stable + 31 community-consensus convars. Not tested yet. |
+| `experimental/gameinfo.gi` | Testing ground. Stable + round 2 (consensus convars) + round 3 (stutter fixes). Not tested yet. |
+
+**Full research:** [RESEARCH.md](RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
+Windows/driver), what's dead weight, and what costs gameplay.
 
 Every variant's file is named `gameinfo.gi`, so you can drop it straight into the game folder.
 
@@ -46,46 +49,32 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
   `LPVEdgeBlending 0`, `EnvironmentMapCacheSize 1024`): works with mods, **a bit less FPS** than stable.
   Dropped. These stay off.
 - **OptiLock engine sections + this cfg's ConVars**: worked with mods but was 30-40 FPS worse. Dropped.
-- **Round 2 (current `experimental`)**: stable + 31 ConVars that the big config families agree on
-  (the Deadlock Mod Manager "DMM Clean" consensus: 3+ families, 75%+ agreement), plus
-  `r_distancefield_enable 0` and `r_update_particles_on_render_only_frames true`. All of them
-  render the same things more cheaply. None hides objects, changes the camera, or is controlled by `video.txt`.
-  - Shadows: `csm_max_num_cascades_override 0`, `csm_res_override_0-3 1`, `lb_dynamic_shadow_*`,
-    `lb_precomputed_shadowmap_enable false`, `r_citadel_distancefield_shadows false`, …
-  - Lighting/post: `r_directional_lightmaps false`, `r_light_flickering_enabled false`, `r_ssao_blur false`,
-    `mat_tonemap_bloom_scale 0`, `volume_fog_enable_jitter false`
-  - Models/animation: `r_morphing_enabled false`, `r_smooth_morph_normals false`,
-    `r_hair_indirect_transmittance false`, `animgraph_footlock_enabled false`, `animgraph_slowdownonslopes_enabled false`
-  - World/particles: `fx_drawmetalspark false`, `r_world_wind_frequency_grass/trees 0`
-  - UI: `panorama_disable_blur true`, `panorama_allow_transitions false`, `panorama_disable_box_shadow true`
-  - Result: _not tested yet._
+- **Round 2 (in `experimental`)**: 29 ConVars that the big config families agree on (the Deadlock Mod Manager
+  "DMM Clean" consensus: 3+ families, 75%+ agreement) plus `r_distancefield_enable 0` and
+  `r_update_particles_on_render_only_frames true`. They render the same things more cheaply. Nothing is hidden,
+  nothing is menu-owned, everything works online. Shadows (cascades, `lb_dynamic_shadow_*`, precomputed shadow maps),
+  lighting/post (directional lightmaps, flickering lights, SSAO blur, bloom scale, fog jitter), models (morphs, hair),
+  world (metal sparks, grass/tree wind), UI (blur, transitions, box shadows).
+- **Round 3 (in `experimental`)**: 6 lines reset to the defaults, marked `//[r3]`: `r_limit_particle_job_duration`,
+  `r_particle_max_size_cull`, `r_texture_budget_threshold`, `r_texture_budget_update_period`,
+  `sc_aggregate_bvh_threshold`, `sc_layer_batch_threshold`. Another config author measured camera-turn stutter and
+  lower FPS with these on.
+- Result: _not tested yet._ If `experimental` is worse, test round 3 alone first.
 
-## Research notes (for later rounds)
+## Top actions outside the cfg (details in RESEARCH.md)
 
-How it was researched: every setting in 10 configs (Sqooky's OptimizationLock family: Sqooky, Eskay,
-max-fps, boot, Piggy, Kaizuchaneru x2; OptiLock FPS/Potato/Ultra Potato) was compared against the
-current stock `gameinfo.gi`, using the Deadlock Mod Manager catalog for convar flags and defaults.
-
-- **`video.txt` beats `gameinfo.gi`** for settings in the in-game video menu (`r_citadel_shadow_quality`,
-  `r_citadel_ssao_quality`, bloom, depth of field, `r_texture_stream_mip_bias`, `fps_max`, …).
-  This cfg's values for those don't matter if `video.txt` sets them.
-- **Next candidates** (fewer configs agree, test separately): `skeleton_instance_lod_optimization 1`,
-  `phys_threaded_transform_update/kinematic_bone_update/cloth_bone_update 1`,
-  `wind_system_temporal_smoothing 0`, `r_aoproxy_cull_dist 0.01`, `r_monitor_3dskybox 0`,
-  `r_character_decal_monitor_render_res 64`, `r_texturefilteringquality` (this cfg uses 5 = 16x aniso;
-  all 10 configs use 0 = bilinear, which is blurrier).
-- **Not worth it:** settings marked `gameinfo_cannot_override` (`r_particle_max_detail_level`,
-  `r_rainparticledensity`, `csm_max_shadow_dist_override`, …) are ignored by the game when set here.
-- **FPS mods (VPKs) that pair well** (from Sqooky's "Various Addons Relating to Performance" and
-  OptiLock's "Essential Fixes"): Optimized Soul Container (low-poly soul orbs), Vindicta Scope Downscale
-  (4096² scope texture → 1080p), Optimized McGinnis Wall, Clutter be Gone "Screenspace" (removes
-  screen-edge smoke/glow particles; upstream reports a 30 FPS drop on vents without it).
-  Skip Blur Disabler: `panorama_disable_blur` already does it without touching HUD files.
+1. **FPS mods:** Screenspace Particle Disabler ("Clutter be Gone"), Optimized Soul Container, Vindicta Scope Downscale.
+2. **`video.txt`:** add the shadow/particle cuts every other pack has. Set `r_render_portals` to `1` (0 breaks Doorman's door).
+3. **Windows/driver:** shader cache 10 GB or Unlimited, HAGS on, windowed optimizations on, unused overlays off. Optionally SMT off.
+4. **Renderer:** stay on DX11 unless `-vulkan` measurably beats it on your PC.
 
 ## Credits
 
 - **liv** ([7liv/compylock](https://github.com/7liv/compylock)): the original cfg this one started from.
 - [dacooderr / OptiLock](https://github.com/dacooderr/OptiLock): used as the mod-compatible reference.
 - [Sqooky / OptimizationLock](https://github.com/Sqooky/OptimizationLock): the config family liv's cfg comes from.
+- Research help: [Deadlock Mod Manager](https://github.com/deadlock-mod-manager/deadlock-mod-manager) perf catalog,
+  [ghempy53/deadlock-config](https://github.com/ghempy53/deadlock-config) (measured A/B tests),
+  [simulieren/deadtune](https://github.com/simulieren/deadtune).
 
 Both upstream projects are GPL-3.0, so this repo is too (see `LICENSE`).
