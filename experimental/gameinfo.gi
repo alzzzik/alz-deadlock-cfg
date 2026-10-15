@@ -1,4 +1,4 @@
-// alz deadlock cfg - stable (main). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - experimental (slightly lower FPS than stable). GPL-3.0
 
 
 GameInfo
@@ -433,8 +433,8 @@ GameInfo
 //[mods] AggregateRTProxyDesc       "1"    
 //[mods] AggregateSceneObjectDesc   "1"    
 //[mods] AggregateVertexColorStream "1"    
-//[mods] EnvironmentMapCacheSize    "1024" 
-//[mods] LPVEdgeBlending            "0"    
+        EnvironmentMapCacheSize    "1024" 
+        LPVEdgeBlending            "0"    
 
     }
 
@@ -452,8 +452,8 @@ GameInfo
         FrameBufferCopyFormat                       "R11G11B10F" 
         GpuLightBinner                              "1"          
         GpuLightBinnerSunLightFastPath              "1"          
-//[mods] HDRFrameBuffer                              "0"          
-//[mods] LayerBatchThresholdFullsort                 "200"        
+        HDRFrameBuffer                              "0"          
+        LayerBatchThresholdFullsort                 "200"        
 //[mods] MinimumLateAllocatedVertexCacheBufferSizeMB "64"         
         NonTexturedGradientFog                      "0"          
         SunLightManagerCount                        "0"          
@@ -521,11 +521,11 @@ GameInfo
         Float16HDRBackBuffer                 "1"
         PET_SupportFadingOpaqueModels        "1"
 
-//[mods] EnableMixedResolution         "1" 
+        EnableMixedResolution         "1" 
 //[mods] MPropertyFlattenIntoParentRow "1"
 //[mods] ParticleTraceOffsetOnlyHit    "1"
-//[mods] ParticlesFoggedByDefault      "0"
-//[mods] PerVertexLighting             "0"
+        ParticlesFoggedByDefault      "0"
+        PerVertexLighting             "0"
 //[mods] PostSimulate                  "0"
     }
 

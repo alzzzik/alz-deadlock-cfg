@@ -7,10 +7,10 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 
 ## Variants
 
-| Folder | Branch | Status |
-|---|---|---|
-| `alz-cfg/gameinfo.gi` | `main` | **Stable.** Works with mods. Best FPS so far. |
-| `alz-cfg-working/gameinfo.gi` | `working` | Experiment. Works with mods, but slightly **lower** FPS than stable. |
+| Folder | Status |
+|---|---|
+| `stable/gameinfo.gi` | **Use this one.** Works with mods. Best FPS so far. |
+| `experimental/gameinfo.gi` | Testing ground. Works with mods, but slightly **lower** FPS than stable right now. |
 
 Every variant's file is named `gameinfo.gi`, so you can drop it straight into the game folder.
 
@@ -35,11 +35,11 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
     `r_update_particles_on_render_only_frames` (more particle work = less FPS),
     `r_particle_fixedrandomseeds`, `r_draw_particle_children_with_parents`, `default_fov 0` and
     `viewmodel_fov 0` (conflict with FOV mods), `citadel_video_preset 9` (max is 3).
-  - 7 are real engine tweaks, being tested on the `working` branch (below).
+  - 7 are real engine tweaks, being tested in `experimental` (below).
 
 ## Experiment log
 
-- **`working` branch**: turned back on `HDRFrameBuffer 0`, `EnableMixedResolution 1`,
+- **`experimental`**: turned back on `HDRFrameBuffer 0`, `EnableMixedResolution 1`,
   `ParticlesFoggedByDefault 0`, `PerVertexLighting 0`, `LayerBatchThresholdFullsort 200`,
   `LPVEdgeBlending 0`, `EnvironmentMapCacheSize 1024`.
   Result: works with mods, **a bit less FPS** than stable. Next step: bring them back one at a time
