@@ -10,7 +10,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 | Folder | Status |
 |---|---|
 | `stable/gameinfo.gi` | **Use this one.** Works with mods. Best FPS so far. |
-| `experimental/gameinfo.gi` | Testing ground. Stable + round 2 (consensus convars) + round 3 (stutter fixes). Not tested yet. |
+| `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–4. Not tested yet. |
 
 **Full research:** [RESEARCH.md](RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
 Windows/driver), what's dead weight, and what costs gameplay.
@@ -57,14 +57,29 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
   world (metal sparks, grass/tree wind), UI (blur, transitions, box shadows).
 - **Round 3 (in `experimental`)**: 6 lines reset to the defaults, marked `//[r3]`: `r_limit_particle_job_duration`,
   `r_particle_max_size_cull`, `r_texture_budget_threshold`, `r_texture_budget_update_period`,
-  `sc_aggregate_bvh_threshold`, `sc_layer_batch_threshold`. Another config author measured camera-turn stutter and
-  lower FPS with these on.
-- Result: _not tested yet._ If `experimental` is worse, test round 3 alone first.
+  `sc_aggregate_bvh_threshold`, `sc_layer_batch_threshold`. The stutter report behind this was withdrawn by its
+  author on 2026-10-15, so these just sit at Valve's defaults now, with no evidence either way.
+- **Round 4 (in `experimental`, 2026-10-16, build 6785)**, from
+  [the research report](reports/Deadlock%20FPS%20gains%20with%20good%20visuals.md):
+  - Added: `r_citadel_disable_particle_lights true` (new Valve convar; ability effects still show, they just stop
+    lighting the floor; toggle `0`/`1` live in the console to A/B), `csm_max_visible_dist 0` + `csm_cascade0-3_override_dist 0`
+    (sun-shadow pass off; the sun is already off), volume fog 64/64/48 (engine minimum).
+  - Fixed: `cl_ragdoll_limit -1` (Doorman's ult indicator is back), `snd_steamaudio_num_threads 2` (Valve default).
+  - Removed (dead or wrong): `r_update_particles_on_render_only_frames`, `thread_pool_option` (hybrid Intel CPUs only),
+    `snd_mixahead 0.05` (up to 50 ms later audio), the duplicate `sc_layer_batch_threshold_fullsort 120` and
+    `snd_ui_positional false`, `lb_csm_override_staticgeo_cascades_value "true"` (parse error), `volume_fog_enable_jitter`,
+    `lb_cubemap_normalization_roughness_begin`, `r_texture_stream_mip_bias` (`video.txt` wins).
+  - New `experimental/video.txt`: puts the RTX 5070's idle fight-time capacity into looks: DLAA, mip bias 0,
+    `shaderquality 1`, soft particles, area lights, correct `mem_level 2` / `gpu_mem_level 3`. Shadow cuts and particle
+    fallbacks stay. 12 keys that no longer exist in the game were deleted (`r_render_portals`, `r_reduce_flash`, …).
+    **Fill in your own VendorID, DeviceID and resolution before using it.** If fights lose FPS, revert in this order:
+    DLAA → FXAA (`r_citadel_upscaling 0`), then `shaderquality 0`, then `r_particle_depth_feathering false`.
+- Result: _not tested yet._ CPU A/B tests need real matches; bot matches apply server-only values.
 
 ## Top actions outside the cfg (details in RESEARCH.md)
 
 1. **FPS mods:** Screenspace Particle Disabler ("Clutter be Gone"), Optimized Soul Container, Vindicta Scope Downscale.
-2. **`video.txt`:** add the shadow/particle cuts every other pack has. Set `r_render_portals` to `1` (0 breaks Doorman's door).
+2. **`video.txt`:** use `experimental/video.txt` as a template (shadow cuts, DLAA, sharper textures).
 3. **Windows/driver:** shader cache 10 GB or Unlimited, HAGS on, windowed optimizations on, unused overlays off. Optionally SMT off.
 4. **Renderer:** stay on DX11 unless `-vulkan` measurably beats it on your PC.
 

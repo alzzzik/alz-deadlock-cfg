@@ -1,4 +1,4 @@
-// alz deadlock cfg - experimental: stable + consensus convars (r2) + stutter fixes (r3). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - experimental: stable + r2 consensus + r3 resets + r4 (2026-10-16). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -593,15 +593,12 @@ GameInfo
         rpg_camera_yaw                          "0"
 //[r3] r_texture_budget_threshold     "0.7" 
 //[r3] r_texture_budget_update_period "0.5" 
-        r_texture_stream_mip_bias      "3"   
         r_texturefilteringquality      "5"   
-        thread_pool_option "2"
         lb_barnlight_shadowmap_scale             "0"    
         lb_csm_cascade_size_override             "1"    
         lb_csm_draw_alpha_tested                 "0"    
         lb_csm_draw_translucent                  "0"    
         lb_csm_override_staticgeo_cascades       "true" 
-        lb_csm_override_staticgeo_cascades_value "true" 
         lb_dynamic_shadow_resolution_base        "16"   
         lb_enable_shadow_casting                 "0"    
         lb_ssss_samples                          "0"    
@@ -626,7 +623,7 @@ GameInfo
         r_ssao                                      "0"    
         r_ssao_strength                             "0"    
         cl_disable_ragdolls "0" 
-        cl_ragdoll_limit    "0" 
+        cl_ragdoll_limit    "-1" 
         cl_fasttempentcollision         "1000" 
         cloth_sim_on_tick               "0"    
         enable_boneflex                 "0"    
@@ -662,7 +659,6 @@ GameInfo
         r_particle_model_per_thread_count        "64"      
         r_particle_skip_postsim                  "true"    
         r_physics_particle_op_spawn_scale        "0"       
-        r_update_particles_on_render_only_frames "true"    
         r_world_wind_strength                    "0"       
         phys_cull_internal_mesh_contacts        "true"  
 //[r3] sc_aggregate_bvh_threshold              "256"    
@@ -671,7 +667,6 @@ GameInfo
         sc_instanced_mesh_motion_vectors        "0"     
         sc_instanced_mesh_size_cull_bias_shadow "10"    
 //[r3] sc_layer_batch_threshold                "256"   
-        sc_layer_batch_threshold_fullsort       "120"   
 //[mods] citadel_video_preset          "9"     
         r_citadel_gpu_culling         "true"  
         r_vma_defrag_algorithm        "0"     
@@ -724,13 +719,11 @@ GameInfo
         r_grass_start_fade "0" 
         cl_simulate_dormant_entities "false" 
         audio_enable_vmix_mastering              "false" 
-        snd_mixahead                             "0.05"  
         snd_occlusion_bounces                    "0"     
         snd_occlusion_rays                       "0"     
         snd_soundmixer_version                   "2"     
         snd_steamaudio_reverb_order_rendering    "0"     
-        snd_ui_positional                        "false" 
-        snd_steamaudio_num_threads               "6"     
+        snd_steamaudio_num_threads               "2"     
         audio_enable_spawn_mask_mix_layer        "false" 
         snd_boxverb_simd                         "false" 
         snd_enable_subgraph_corenull_passthrough "false" 
@@ -900,12 +893,10 @@ GameInfo
         lb_precomputed_shadowmap_enable               "false"  // shadows
         r_citadel_distancefield_shadows               "false"  // shadows
         r_hair_shadowtile                             "false"  // shadows
-        lb_cubemap_normalization_roughness_begin      "0.01"  // lighting
         r_directional_lightmaps                       "false"  // lighting
         r_light_flickering_enabled                    "false"  // lighting
         r_ssao_blur                                   "false"  // post
         mat_tonemap_bloom_scale                       "0"  // post
-        volume_fog_enable_jitter                      "false"  // post
         r_hair_indirect_transmittance                 "false"  // models
         r_smooth_morph_normals                        "false"  // models
         r_morphing_enabled                            "false"  // models
@@ -916,6 +907,17 @@ GameInfo
         panorama_allow_transitions                    "false"  // ui
         panorama_disable_box_shadow                   "true"  // ui
 
+
+        // --- alz round 4 (2026-10-16, build 6785): sun-shadow pass off + fog floor + particle lights ---
+        csm_max_visible_dist                          "0"
+        csm_cascade0_override_dist                    "0"
+        csm_cascade1_override_dist                    "0"
+        csm_cascade2_override_dist                    "0"
+        csm_cascade3_override_dist                    "0"
+        volume_fog_width                              "64"
+        volume_fog_height                             "64"
+        volume_fog_depth                              "48"
+        r_citadel_disable_particle_lights             "true"   // new in 6779; A/B live with r_citadel_disable_particle_lights 0/1
     }
 
     Memory
