@@ -28,7 +28,7 @@ Every variant's file is named `gameinfo.gi`, so you can drop it straight into th
 
 The base cfg ran fine without mods but broke when mods were enabled. The stable cfg changes:
 
-- **SearchPaths** updated to the current format (`Game_UILanguage`, `Game_LowViolence`) and
+- **SearchPaths** updated to the current format (`Game_UILanguage`, `Game_LowViolence`), with explicit `Mod`/`Write` lines (without them the game crashes with "Unable to read default keybinding configuration" when launched without Deadlock Mod Manager) and
   `Game citadel/addons` kept, so mods load. This is the most likely fix.
 - **34 lines commented out** with a `//[mods]` prefix, so they're easy to find and restore:
   - 10 are settings the current game no longer reads (`MaxPreloadTextureResolution`, the

@@ -54,8 +54,14 @@ GameInfo
             Game_UILanguage  "citadel_*LANGUAGE*"
             Game_LowViolence "citadel_lv"
 
+            // Mod/Write must be explicit: without them the engine makes the FIRST Game path (citadel/addons)
+            // the MOD path and fails with "Unable to read default keybinding configuration (user_keys_default)".
             Game  "citadel/addons"
+            Mod   "citadel"
+            Write "citadel"
             Game  "citadel"
+            Mod   "core"
+            Write "core"
             Game  "core"
         }
 
