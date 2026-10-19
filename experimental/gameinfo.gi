@@ -1,4 +1,4 @@
-// alz deadlock cfg - experimental: stable + r2 consensus + r3 resets + r4 (2026-10-16). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - experimental: stable + r2 consensus + r3 resets + r4 + r5 (2026-10-19). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -550,7 +550,7 @@ GameInfo
         citadel_portrait_world_renderer_off      "false" 
         citadel_trooper_glow_disabled            "0"     
         cl_phys_enabled                          "true"  
-        lb_enable_dynamic_lights                 "true" 
+//[r5 blocked by Valve] lb_enable_dynamic_lights                 "true" 
         r_citadel_enable_pano_world_blur         "true"  
 //[mods] r_particle_explicit_fetch                "false" 
 //[r3] r_particle_max_size_cull                 "600"   
@@ -575,8 +575,8 @@ GameInfo
         citadel_unit_status_single_bar_mode             "false"
         v8_maximum_heap_size_mb                         "1024" 
 //[mods] panorama_comp_layer_lru_lifetime                "1"    
-        lb_enable_baked_shadows     "false"
-        lb_enable_stationary_lights "false"
+//[r5 blocked by Valve] lb_enable_baked_shadows     "false"
+//[r5 blocked by Valve] lb_enable_stationary_lights "false"
         engine_low_latency_sleep_after_client_tick "false"
         citadel_melee_shake_duration 0
         citadel_camera_soft_collision_angle         "75"   
@@ -661,7 +661,7 @@ GameInfo
         r_particle_batch_collections             "true"    
 //[mods] r_particle_fixedrandomseeds              "true"    
         r_particle_max_texture_layers            "4"       
-        r_particle_min_timestep                  "0.00241" 
+//[r5 jagged particles >415 FPS] r_particle_min_timestep                  "0.00241" 
         r_particle_model_per_thread_count        "64"      
         r_particle_skip_postsim                  "true"    
         r_physics_particle_op_spawn_scale        "0"       
@@ -669,12 +669,12 @@ GameInfo
         phys_cull_internal_mesh_contacts        "true"  
 //[r3] sc_aggregate_bvh_threshold              "256"    
         sc_allow_dithered_lod                   "false" 
-        sc_fade_distance_scale_override         "100"   
+//[r5 blocked by Valve] sc_fade_distance_scale_override         "100"   
         sc_instanced_mesh_motion_vectors        "0"     
         sc_instanced_mesh_size_cull_bias_shadow "10"    
 //[r3] sc_layer_batch_threshold                "256"   
 //[mods] citadel_video_preset          "9"     
-        r_citadel_gpu_culling         "true"  
+//[r5 blocked by Valve] r_citadel_gpu_culling         "true"  
         r_vma_defrag_algorithm        "0"     
         rtx_dynamic_blas              "false" 
         rtx_dynamic_blas_caching      "true"  
@@ -830,7 +830,7 @@ GameInfo
         disable_source_soundscape_trace "1"
 
 
-        fps_max    "400"
+        fps_max    "400"  // dead: video.txt fps_max wins
         fps_max_ui "120"
 
         in_button_double_press_window "0.3"
