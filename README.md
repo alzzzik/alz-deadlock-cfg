@@ -9,7 +9,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 
 | Folder | Status |
 |---|---|
-| `stable/gameinfo.gi` | **Use this one.** Works with mods. Best FPS so far. |
+| `stable/gameinfo.gi` + `stable/video.txt` | **Use these.** Works with mods. Best FPS so far. `video.txt` is alz's own (DLSS, 1440p): copy your own `VendorID`, `DeviceID` and resolution into it. |
 | `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–4. Not tested yet. |
 
 **Full research:** [RESEARCH.md](RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
