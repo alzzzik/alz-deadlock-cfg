@@ -19,7 +19,7 @@ GameInfo
     tonemapping "0"
     GameData    "citadel.fgd"
 
-    PGIVersion "39A735A413003C88A806B364C32DFC6D077E551B9E4EC6C7B11D41E8E67BFA0C"
+    PGIVersion "48C04ECAFC6448F8D3F41F0AA3A15D065501751CF45FBE32DF6CB951BC4F7F6E" // build 6801
 
     Localize
     {
@@ -288,11 +288,19 @@ GameInfo
             AggregateInstancingMeshlets        "1"
             BakePropsWithExtraVertexStreams    "1"
             MergeTranslucents                  "1"
+
+            // 6801: precomputed static shadowmaps for fog (Valve stock)
+            BakePrecomputedShadows                     "1"
+            BakePrecomputedShadowsForDirectionalLights "0"
+            BakePrecomputedDepthPyramids               "0"
+            PrecomputedShadowmapAtlas                  "1" // so precomputed shadows work without bindless (dx11)
+            PrecomputedShadowmapAtlasBorder            "1"
+            PrecomputedShadowmapResolutionDefault      "128" // should match SceneSystem/FogCachedShadowTileSizeTools
         }
 
         BakedLighting
         {
-            Version                          "4"
+            Version                          "5" // 6801: maps now ship v5 lightmaps
             ImportanceVolumeTransitionRegion "512" // distance we transition from high to low resolution charts
             LightmapChannels
             {
@@ -300,17 +308,8 @@ GameInfo
                 debug_chart_color             "1"
                 directional_irradiance_sh2_dc "1"
 
-                directional_irradiance_sh2_r
-                {
-                    CompressedFormat "DXT1"
-                }
-
-                directional_irradiance_sh2_g
-                {
-                    CompressedFormat "DXT1"
-                }
-
-                directional_irradiance_sh2_b
+                // 6801: the r/g/b channels were replaced by one luminance channel
+                directional_irradiance_sh2_lum
                 {
                     CompressedFormat "DXT1"
                 }
@@ -454,9 +453,12 @@ GameInfo
         DefaultShadowTextureWidth                   "0"          
 //[mods] DisableLateAllocatedTransformBuffer         "1"          
         DynamicShadowResolution                     "1"          
-        FogCachedShadowAtlasHeight                  "0"          
-        FogCachedShadowAtlasWidth                   "0"          
-        FogCachedShadowTileSize                     "0"          
+//[6801 renamed to ...Tools, tools-only] FogCachedShadowAtlasHeight                  "0"
+//[6801 renamed to ...Tools, tools-only] FogCachedShadowAtlasWidth                   "0"
+//[6801 renamed to ...Tools, tools-only] FogCachedShadowTileSize                     "0"
+        FogCachedShadowAtlasWidthTools              "2048" // 6801 Valve stock
+        FogCachedShadowAtlasHeightTools             "2048" // 6801 Valve stock
+        FogCachedShadowTileSizeTools                "128"  // 6801 Valve stock, matches PrecomputedShadowmapResolutionDefault
         FrameBufferCopyFormat                       "R11G11B10F" 
         GpuLightBinner                              "1"          
         GpuLightBinnerSunLightFastPath              "1"          
