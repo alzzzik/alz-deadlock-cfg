@@ -10,7 +10,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 | Folder | Status |
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Use these.** Works with mods. Best FPS so far. `video.txt` is alz's own (DLSS, 1440p): copy your own `VendorID`, `DeviceID` and resolution into it. |
-| `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–4. Not tested yet. |
+| `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–5. **Tested 2026-10-20: about −40 FPS vs stable. Use stable.** |
 
 **Full research:** [research/RESEARCH.md](research/RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
 Windows/driver), what's dead weight, and what costs gameplay.
@@ -74,7 +74,8 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
     fallbacks stay. 12 keys that no longer exist in the game were deleted (`r_render_portals`, `r_reduce_flash`, …).
     **Fill in your own VendorID, DeviceID and resolution before using it.** If fights lose FPS, revert in this order:
     DLAA → FXAA (`r_citadel_upscaling 0`), then `shaderquality 0`, then `r_particle_depth_feathering false`.
-- Result: _not tested yet._ CPU A/B tests need real matches; bot matches apply server-only values.
+- **Result (2026-10-20, rounds 2–5 together, with mods via DMM): about −40 FPS vs stable. Not recommended; use stable.**
+  Not split further, so it's unknown whether `video.txt` (DLAA at full render scale) or the `gameinfo.gi` changes cost the FPS.
 
 ## Top actions outside the cfg (details in research/RESEARCH.md)
 
