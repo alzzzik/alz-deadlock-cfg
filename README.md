@@ -12,7 +12,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 | `stable/gameinfo.gi` + `stable/video.txt` | **Use these.** Works with mods. Best FPS so far. `video.txt` is alz's own (DLSS, 1440p): copy your own `VendorID`, `DeviceID` and resolution into it. |
 | `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–4. Not tested yet. |
 
-**Full research:** [RESEARCH.md](RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
+**Full research:** [research/RESEARCH.md](research/RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
 Windows/driver), what's dead weight, and what costs gameplay.
 
 Every variant's file is named `gameinfo.gi`, so you can drop it straight into the game folder.
@@ -60,7 +60,7 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
   `sc_aggregate_bvh_threshold`, `sc_layer_batch_threshold`. The stutter report behind this was withdrawn by its
   author on 2026-10-15, so these just sit at Valve's defaults now, with no evidence either way.
 - **Round 4 (in `experimental`, 2026-10-16, build 6785)**, from
-  [the research report](reports/Deadlock%20FPS%20gains%20with%20good%20visuals.md):
+  [the research report](research/reports/Deadlock%20FPS%20gains%20with%20good%20visuals.md):
   - Added: `r_citadel_disable_particle_lights true` (new Valve convar; ability effects still show, they just stop
     lighting the floor; toggle `0`/`1` live in the console to A/B), `csm_max_visible_dist 0` + `csm_cascade0-3_override_dist 0`
     (sun-shadow pass off; the sun is already off), volume fog 64/64/48 (engine minimum).
@@ -76,7 +76,7 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
     DLAA → FXAA (`r_citadel_upscaling 0`), then `shaderquality 0`, then `r_particle_depth_feathering false`.
 - Result: _not tested yet._ CPU A/B tests need real matches; bot matches apply server-only values.
 
-## Top actions outside the cfg (details in RESEARCH.md)
+## Top actions outside the cfg (details in research/RESEARCH.md)
 
 1. **FPS mods:** Screenspace Particle Disabler ("Clutter be Gone"), Optimized Soul Container, Vindicta Scope Downscale.
 2. **`video.txt`:** use `experimental/video.txt` as a template (shadow cuts, DLAA, sharper textures).
