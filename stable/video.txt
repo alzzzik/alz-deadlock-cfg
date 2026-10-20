@@ -8,8 +8,8 @@
 	"setting.gpu_mem_level"		"3"
 	"setting.gpu_level"		"3"
 	"setting.knowndevice"		"0"
-	"setting.defaultres"		"2560"
-	"setting.defaultresheight"		"1440"
+	"setting.defaultres"		"2560" // change to your monitor width
+	"setting.defaultresheight"		"1440" // change to your monitor height
 	"setting.refreshrate_numerator"		"0"
 	"setting.refreshrate_denominator"		"0"
 	"setting.fullscreen"		"0"
@@ -26,7 +26,7 @@
 	"setting.r_effects_bloom"		"false"
 	"setting.r_post_bloom"		"false"
 	"setting.r_citadel_antialiasing"		"1"
-	"setting.r_citadel_upscaling"		"4"
+	"setting.r_citadel_upscaling"		"0" // 0 = Stretch (works on any GPU). NVIDIA: pick DLSS in the game menu if you want it
 	"setting.r_citadel_dlss_settings_mode"		"2"
 	"setting.r_dlss_preset"		"10"
 	"setting.r_depth_of_field"		"false"
@@ -43,7 +43,7 @@
 	"setting.volume_fog_depth"		"48"
 	"setting.r_citadel_fog_quality"		"0"
 	"setting.r_citadel_shadow_quality"		"0"
-	"setting.mat_viewportscale"		"0.58"
+	"setting.mat_viewportscale"		"1" // render scale 100%: lower it in the menu for more FPS
 	"setting.r_fullscreen_gamma"		"2.2"
 	"setting.r_low_latency"		"1"
 	"setting.r_light_sensitivity_mode"		"true"

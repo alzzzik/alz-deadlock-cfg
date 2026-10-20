@@ -7,20 +7,33 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 
 ## Variants
 
-| Folder | Status |
+| Folder | Who it's for |
 |---|---|
-| `stable/gameinfo.gi` + `stable/video.txt` | **Use these.** Works with mods. Best FPS so far. `video.txt` is alz's own (DLSS, 1440p): copy your own `VendorID`, `DeviceID` and resolution into it. |
-| `experimental/gameinfo.gi` + `experimental/video.txt` | Testing ground. Stable + rounds 2–5. **Tested 2026-10-20: about −40 FPS vs stable. Use stable.** |
+| `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
+| `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
+
+The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
+[`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental), out of the way.
+
+### Setting up `video.txt`
+
+Copy these lines from **your own** `video.txt` into the new one before using it:
+`VendorID`, `DeviceID`, `setting.defaultres`, `setting.defaultresheight` (they're marked with comments).
+
+After that, change upscaling in the game menu (Settings → Video) if you want more FPS:
+- **NVIDIA RTX:** DLSS. Scaling 1.7x (alz's choice) or 1.5x is a good balance.
+- **AMD / Intel / older NVIDIA:** FSR, or keep Stretch and lower the render scale a bit.
 
 **Full research:** [research/RESEARCH.md](research/RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
 Windows/driver), what's dead weight, and what costs gameplay.
 
-Every variant's file is named `gameinfo.gi`, so you can drop it straight into the game folder.
+Every variant's files are named `gameinfo.gi` and `video.txt`, so you can drop them straight in.
 
 ## Install
 
-1. Back up `steamapps/common/Deadlock/game/citadel/gameinfo.gi`.
-2. Copy the variant's `gameinfo.gi` over it.
+1. Back up `steamapps/common/Deadlock/game/citadel/gameinfo.gi` and
+   `Steam/userdata/<your id>/1422450/local/cfg/video.txt`.
+2. Copy the variant's `gameinfo.gi` and `video.txt` over them (fill in your lines first, see above).
 3. Launch with mods on (DMM or Steam).
 4. Game patches can overwrite `gameinfo.gi`. After an update, copy it in again.
 
@@ -43,6 +56,10 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
   - 7 are real engine tweaks. Tested in round 1 and they cost FPS, so they stay off.
 
 ## Experiment log
+
+Rounds 2–5 were tested in the `experimental` variant (now on the
+[`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental)).
+
 
 - **Round 1** (7 engine lines back on: `HDRFrameBuffer 0`, `EnableMixedResolution 1`,
   `ParticlesFoggedByDefault 0`, `PerVertexLighting 0`, `LayerBatchThresholdFullsort 200`,
@@ -80,7 +97,7 @@ The base cfg ran fine without mods but broke when mods were enabled. The stable 
 ## Top actions outside the cfg (details in research/RESEARCH.md)
 
 1. **FPS mods:** Screenspace Particle Disabler ("Clutter be Gone"), Optimized Soul Container, Vindicta Scope Downscale.
-2. **`video.txt`:** use `experimental/video.txt` as a template (shadow cuts, DLAA, sharper textures).
+2. **`video.txt`:** pick an upscaler that fits your GPU (see "Setting up `video.txt`" above).
 3. **Windows/driver:** shader cache 10 GB or Unlimited, HAGS on, windowed optimizations on, unused overlays off. Optionally SMT off.
 4. **Renderer:** stay on DX11 unless `-vulkan` measurably beats it on your PC.
 
