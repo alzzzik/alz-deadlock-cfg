@@ -49,6 +49,7 @@ GameInfo
 
     FileSystem
     {
+// Deadlock Mod Manager - Start
         SearchPaths
         {
             Game_UILanguage  "citadel_*LANGUAGE*"
@@ -64,6 +65,7 @@ GameInfo
             Write "core"
             Game  "core"
         }
+// Deadlock Mod Manager - End
 
         UserSettingsPathID       "USRLOCAL"
         LegacyUserSettingsPathID "MOD"
