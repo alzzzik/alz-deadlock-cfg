@@ -3,6 +3,9 @@
 Consolidated 2026-10-15, game build ~6779. Everything here was checked against Valve's own data (the convar dump,
 the stock `gameinfo.gi`, the matchmaking strings) wherever possible. Player reports are labelled as such.
 
+**Newer reports:** [build 6801 changes (2026-10-20)](reports/Deadlock%20build%206801%20changes.md): the lighting
+format change that broke every pre-6801 cfg, and what the patch means for FPS.
+
 ## TL;DR
 
 1. **About 60 lines in the stable cfg do nothing.** 19 are settings the game no longer has, 5 are blocked from
