@@ -3,7 +3,8 @@
 Consolidated 2026-10-15, game build ~6779. Everything here was checked against Valve's own data (the convar dump,
 the stock `gameinfo.gi`, the matchmaking strings) wherever possible. Player reports are labelled as such.
 
-**Newer reports:** [OptiLock Community Config review (2026-10-27)](reports/OptiLock%20Community%20Config%20review.md): the community "Ultra Low" preset, and the 5 zero-visual ideas worth testing.
+**Newer reports:** [OptiLock repo review 6.1 (2026-10-27)](reports/OptiLock%20repo%20review%206.1.md): every preset, the 5.8→6.1 changes, Essential Fixes VPKs.
+[OptiLock Community Config review (2026-10-27)](reports/OptiLock%20Community%20Config%20review.md): the community "Ultra Low" preset, and the 5 zero-visual ideas worth testing.
 [QoLLock test branch and free FPS (2026-10-27)](reports/QoLLock%20test%20branch%20and%20free%20FPS.md): QOLLOCK's test branch, zero-visual proposals per variant, cleanup list and corrections.
 [OptiLock 5.8 update (2026-10-21)](reports/OptiLock%205.8%20update%202026-10-21.md): what OptiLock changed and what suits alz.
 [build 6801 changes (2026-10-20)](reports/Deadlock%20build%206801%20changes.md): the lighting
