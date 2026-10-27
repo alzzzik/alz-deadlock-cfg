@@ -11,6 +11,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
 | `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
+| `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground based on `alz/`: changes meant to add FPS with the same or better looks. `video.txt` is identical to `alz/`. Every change is tagged in `gameinfo.gi`: `[ax1]` fixes (dead, conflicting or harmful lines), `[ax2]` convars back to Valve defaults, `[ax3]` engine keys for features that are already off. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
 [`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental), out of the way.
