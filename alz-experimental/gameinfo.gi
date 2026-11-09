@@ -1,4 +1,4 @@
-// alz deadlock cfg - alz-experimental (alz + zero-visual tests, 2026-10-27; tags [ax1] fixes, [ax2] convars, [ax3] engine sections). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - alz-experimental (alz + CompLock zero-visual lines tagged [cl1], 2026-11-09). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -474,12 +474,6 @@ GameInfo
         TransformTextureRowCount                    "1024"       
         TransformTextureRowCountToolsMode           "6144"       
         VolumetricFog                               "0"          
-        // [ax3] zero-visual engine keys: these features are already off in this cfg (OptiLock Community preset)
-        PointLightShadowsEnabled                    "0"          //[ax3] light shadow casting is already off
-        SparseShadowTrees                           "0"          //[ax3] sparseshadowtree_enable_rendering is already 0
-        DisableShadowFullSort                       "1"          //[ax3] almost no shadows to sort
-//[ax3 next test] GpuLightBinnerBinEnvMaps          "1"          // moves reflection-probe binning to the GPU light binner
-//[ax3 next test] GpuLightBinnerBinLPVs             "1"          // moves lighting-volume binning to the GPU light binner
 
 
 
@@ -607,17 +601,17 @@ GameInfo
         citadel_tightcamera_alternative         "1"
         nav_edit_use_camera                     "0"
         rpg_camera_yaw                          "0"
-//[ax2] r_texture_budget_threshold     "0.7"  // back to Valve default 0.9: texture pool shrinks later (equal or sharper textures)
-//[ax2] r_texture_budget_update_period "0.5"  // back to Valve default 0.1
+        r_texture_budget_threshold     "0.7" 
+        r_texture_budget_update_period "0.5" 
         r_texture_stream_mip_bias      "3"   
         r_texturefilteringquality      "5"   
-//[ax1] thread_pool_option "2"  // no-op on the 5700X (hybrid Intel CPUs only)
+        thread_pool_option "2"
         lb_barnlight_shadowmap_scale             "0"    
         lb_csm_cascade_size_override             "1"    
         lb_csm_draw_alpha_tested                 "0"    
         lb_csm_draw_translucent                  "0"    
         lb_csm_override_staticgeo_cascades       "true" 
-//[ax1] lb_csm_override_staticgeo_cascades_value "true"  // dead: video.txt sets it, and "true" is not a number
+        lb_csm_override_staticgeo_cascades_value "true" 
         lb_dynamic_shadow_resolution_base        "16"   
         lb_enable_shadow_casting                 "0"    
         lb_ssss_samples                          "0"    
@@ -642,7 +636,7 @@ GameInfo
         r_ssao                                      "0"    
         r_ssao_strength                             "0"    
         cl_disable_ragdolls "0" 
-        cl_ragdoll_limit    "-1"  //[ax1] was "0": hid Doorman's ult indicator
+        cl_ragdoll_limit    "0" 
         cl_fasttempentcollision         "1000" 
         cloth_sim_on_tick               "0"    
         enable_boneflex                 "0"    
@@ -674,21 +668,30 @@ GameInfo
         r_particle_batch_collections             "true"    
 //[mods] r_particle_fixedrandomseeds              "true"    
         r_particle_max_texture_layers            "4"       
-//[ax1] r_particle_min_timestep                  "0.00241"  // jagged particles above ~415 FPS
-//[ax2] r_particle_model_per_thread_count        "64"  // back to Valve default 32
-        citadel_player_model_force_highest_lod "false" //[ax2] own hero only; always close to the camera, so top LOD anyway
+        r_particle_min_timestep                  "0.00241" 
+        r_particle_model_per_thread_count        "64"      
         r_particle_skip_postsim                  "true"    
         r_physics_particle_op_spawn_scale        "0"       
 //[mods] r_update_particles_on_render_only_frames "true"    
-        r_world_wind_strength                    "0"       
+        r_world_wind_strength                    "0"
+        // --- [cl1] CompLock zero-visual lines (deadlockconfig.com, 2026-11-09). Untested on this PC ---
+        cl_generate_postdataupdatepreserved   "false"  //[cl1] skip update callbacks for entities that didn't change
+        panorama_min_comp_layer_cache_cost    "0"      //[cl1] let the UI cache every composition layer
+        panorama_comp_layer_lru_lifetime      "4"      //[cl1] keep cached UI layers 4 s (default 1); liv had a similar line off for mod safety, watch HUD mods
+        rope_collide                          "0"      //[cl1] ropes are already hidden (r_drawropes)
+        rope_wind_dist                        "0"      //[cl1] no rope wind simulation
+        wind_system_default_resolution_xy     "0"      //[cl1] wind strength is already 0
+        wind_system_temporal_smoothing        "false"  //[cl1] no smoothing for wind that is off
+        r_world_wind_frequency_grass          "0"      //[cl1] grass wind (strength already 0)
+        r_world_wind_frequency_trees          "0"      //[cl1] tree wind (strength already 0)       
         phys_cull_internal_mesh_contacts        "true"  
         sc_aggregate_bvh_threshold              "256"    
         sc_allow_dithered_lod                   "false" 
         sc_fade_distance_scale_override         "100"   
-//[ax2] sc_instanced_mesh_motion_vectors        "0"  // back to default on: correct motion vectors for DLSS
+        sc_instanced_mesh_motion_vectors        "0"     
         sc_instanced_mesh_size_cull_bias_shadow "10"    
         sc_layer_batch_threshold                "256"   
-//[ax1] sc_layer_batch_threshold_fullsort       "120"  // dead: Valve stock "20" further down wins
+        sc_layer_batch_threshold_fullsort       "120"   
 //[mods] citadel_video_preset          "9"     
         r_citadel_gpu_culling         "true"  
         r_vma_defrag_algorithm        "0"     
@@ -727,7 +730,7 @@ GameInfo
         r_hair_ao                                         "0"     
         r_max_portal_render_targets                       "2"     
 //[mods] r_particle_model_new                              "false"
-//[ax2] r_particle_model_new8                             "false"  // back to Valve default true
+        r_particle_model_new8                             "false"
 //[mods] r_particle_newinput                               "true"  
         r_pixelvisibility_partial                         "false" 
         r_render_hair                                     "false" 
@@ -741,15 +744,15 @@ GameInfo
         r_grass_start_fade "0" 
         cl_simulate_dormant_entities "false" 
         audio_enable_vmix_mastering              "false" 
-//[ax1] snd_mixahead                             "0.05"  // up to 50 ms later audio, no shown CPU gain
+        snd_mixahead                             "0.05"  
         snd_occlusion_bounces                    "0"     
         snd_occlusion_rays                       "0"     
         snd_soundmixer_version                   "2"     
         snd_steamaudio_reverb_order_rendering    "0"     
-//[ax1] snd_ui_positional                        "false"  // dead: Valve stock "1" further down wins
-        snd_steamaudio_num_threads               "2"      //[ax2] was "6": Valve default, fewer threads competing with the game
+        snd_ui_positional                        "false" 
+        snd_steamaudio_num_threads               "6"     
         audio_enable_spawn_mask_mix_layer        "false" 
-//[ax2] snd_boxverb_simd                         "false"  // back to Valve default true (SIMD reverb path)
+        snd_boxverb_simd                         "false" 
         snd_enable_subgraph_corenull_passthrough "false" 
 
 
