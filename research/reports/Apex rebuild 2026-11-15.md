@@ -75,6 +75,16 @@ draw; they stop casting light on the floor and heroes. It is a `release` convar,
 **Kept on purpose:** all of liv's engine-section edits that the game reads (zeroed shadow atlases, fog switches,
 bigger buffer pools). Engine-section changes have measured worse on this PC twice, so apex does not touch what works.
 
+## What the other packs did since late October
+
+- **OptimizationLock 3.9 (2026-11-04)** moved the same way as apex on three lines: `snd_boxverb_simd` false → true,
+  `snd_mixahead` 0.05 → 0.01, and it added `cl_generate_postdataupdatepreserved false` and
+  `panorama_min_comp_layer_cache_cost 0` (both also in CompLock and in apex's `[zv]` group).
+- **CompLock** dropped its own `r_particle_min_timestep` line (no reason given).
+- **OptiLock** and **compylock** have had no `gameinfo.gi` change since 2026-10-26 and 2026-10-10.
+- All four packs still set `sc_instanced_mesh_motion_vectors 0`. apex goes against them on purpose because it ships
+  DLSS; if you run without an upscaler, adding the line back is reasonable.
+
 ## Evidence status
 
 There is still almost no per-line FPS data for Deadlock. The only careful benchmark is
