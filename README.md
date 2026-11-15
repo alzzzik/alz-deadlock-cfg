@@ -11,6 +11,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
 | `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
+| `apex/gameinfo.gi` + `apex/video.txt` | **Newest candidate (2026-11-15, build 6861).** alz rebuilt with every line checked by script against Valve's convar dump: 61 dead lines removed, harmful lines dropped, 10 new lines added. Untested on alz's PC. See [the apex report](research/reports/Apex%20rebuild%202026-11-15.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex/gameinfo.gi` with `stable/video.txt`. |
 | `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground: an exact copy of `alz/` plus 9 zero-visual lines from CompLock (deadlockconfig.com), tagged `[cl1]` in `gameinfo.gi`. `video.txt` is identical to `alz/`. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
@@ -29,6 +30,22 @@ After that, change upscaling in the game menu (Settings → Video) if you want m
 Windows/driver), what's dead weight, and what costs gameplay.
 
 Every variant's files are named `gameinfo.gi` and `video.txt`, so you can drop them straight in.
+
+## Checking a cfg
+
+`tools/lint.py` reports every `ConVars` line that can't do what it says (removed from the game, blocked, server-owned,
+out of range, equal to the default, duplicated, or overridden by a saved value or `video.txt`) and lists the edits
+outside `ConVars`. Run it after a game update:
+
+```bash
+python3 tools/lint.py apex/gameinfo.gi --video apex/video.txt
+```
+
+## Launch options
+
+`-novid +fps_max 0 +fps_max_ui 0`. The two `+` options are how Valve's own tooltip says to go beyond the menu sliders,
+and they are needed because `fps_max` is an `archive` convar: the value the game saved last time wins over
+`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex/gameinfo.gi`.
 
 ## Install
 
