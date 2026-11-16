@@ -4,7 +4,7 @@
 Usage:  python3 tools/lint.py <gameinfo.gi> [--catalog catalog.json] [--video video.txt]
 
 Reports every ConVars line that cannot do what it says: removed from the game, blocked
-(gameinfo_cannot_override), server-replicated, outside min/max, equal to the default,
+(gameinfo_cannot_override), replicated, outside min/max, equal to the default,
 set twice, archive-flagged (a saved value wins) or owned by video.txt. Also lists every
 edit outside ConVars, marking the sections Valve's matchmaking message names.
 
@@ -85,7 +85,7 @@ def flat(tree, pre=()):
 def norm(v):
     v = str(v).strip().lower()
     if v in ("true", "false"):
-        return "1" if v == "true" else "0"
+        return "1.0" if v == "true" else "0.0"
     try:
         return repr(float(v))
     except ValueError:
@@ -159,7 +159,7 @@ def main(argv):
         flags = x.get("flags", [])
         d = stock_map[p][-1] if p in stock_map else x.get("default")
         if "replicated" in flags:
-            groups["SERVER-OWNED (replicated; bot matches only)"].append(f"{name} {v}")
+            groups["REPLICATED (server may override; sources disagree for developmentonly ones)"].append(f"{name} {v}")
             continue
         try:
             fv = float(norm(v))
@@ -187,7 +187,7 @@ def main(argv):
             for it in groups[g]:
                 print("  ", it)
     bad = sum(len(v) for g, v in groups.items()
-              if g.split(":")[0].split(" ")[0] in ("DUPLICATE", "UNKNOWN", "DEAD", "SERVER-OWNED", "CLAMPED", "NO-OP"))
+              if g.split(":")[0].split(" ")[0] in ("DUPLICATE", "UNKNOWN", "DEAD", "CLAMPED", "NO-OP"))
     print(f"\n{len(groups['active'])} active lines, {bad} dead-weight lines")
     return 1 if bad else 0
 

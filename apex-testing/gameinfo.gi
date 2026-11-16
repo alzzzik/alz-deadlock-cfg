@@ -552,6 +552,8 @@ GameInfo
         //        [cheat] cheat-flagged: applies at startup from this file; can't be changed live.
         //        [zv]    new vs alz, zero visual change.   [fight] new vs alz, small visual cost.
         //        [test]  off by default; remove the leading // to A/B one at a time.
+        // r2 (2026-11-16): every line re-read against CompLock's CVAR Index (plain-language description of
+        // 4,886 cvars, build 6861), DMM's notes and Sqooky's comments. See research/reports/Convar review r2.md.
         // =====================================================================================
 
         // --- View and feel (alz's own look; not FPS) ---
@@ -560,12 +562,9 @@ GameInfo
         citadel_camera_wobble_disable                "true"
         citadel_camera_listening_offset              "-1"
         citadel_camera_pitch_default                 "0"
-        citadel_camera_height                        "0"      //[cheat]
         r_citadel_clip_sphere_min_opacity            "0"      //[cheat]
         cam_idealdelta                               "0"      //[arch]
         cam_ideallag                                 "0"      //[arch]
-        citadel_tightcamera_alternative              "1"      //[arch]
-        citadel_bullet_shot_offset_fade_time         "0"
         cc_captiontrace                              "0"
         mm_idle_enabled                              "false"
         mm_prefer_solo_only                          "true"   //[arch]
@@ -575,15 +574,12 @@ GameInfo
         // --- Input and frame pacing ---
         engine_accurate_input_processing_delta_time  "true"
         engine_max_ticks_to_simulate                 "2"
-//[test] engine_low_latency_sleep_after_client_tick  "true"   // release convar: flip 1/0 live in a fight first. Reports split (smoother vs keyboard lag).
 
         // --- Things not drawn (deliberate, same as alz) ---
-        r_drawviewmodel                              "false"  //[cheat]
         r_drawropes                                  "false"  //[cheat]
         r_render_hair                                "false"  //[cheat]
         r_hair_ao                                    "0"
         r_rendersun                                  "0"      //[cheat]
-        r_drawtracers_firstperson                    "false"  //[arch]
         r_pixelvisibility_partial                    "false"  //[cheat]
         cl_show_splashes                             "0"
         sc_clutter_enable                            "false"
@@ -611,25 +607,17 @@ GameInfo
         lb_csm_draw_translucent                      "0"
         lb_dynamic_shadow_resolution_base            "128"    // engine minimum (alz had 16, which is raised to 128 anyway)
         lb_sun_csm_size_cull_threshold_texels        "60"
-        r_size_cull_threshold_shadow                 "2.4"    //[cheat]
         r_citadel_sun_shadow_slope_scale_depth_bias  "0"
         sparseshadowtree_enable_rendering            "0"
-        sparseshadowtree_disable_for_viewmodel       "1"
-        sparseshadowtree_leaf_precision_viewmodel    "0"
-        csm_viewmodel_max_shadow_dist                "1"      //[cheat]
-        csm_viewmodel_max_visible_dist               "1"      //[cheat]
-        csm_viewmodel_nearz                          "512"    //[cheat]
 
         // --- Lighting and post ---
         cl_retire_low_priority_lights                "1"
         mat_max_lighting_complexity                  "0"      //[cheat]
         r_ssao                                       "0"
-        r_ssao_strength                              "0"
         lb_ssss_samples                              "3"      // engine minimum (alz had 0, which is raised to 3 anyway)
         r_lightmap_size                              "2048"
         r_lightmap_size_directional_irradiance       "0"
         volume_fog_intermediate_textures_hdr         "false"
-        r_citadel_gpu_preview_denoise_passes         "0"
         r_character_decal_resolution                 "256"    // engine minimum (alz had 4)
         r_citadel_disable_particle_lights            "true"   //[fight] Valve dev tip. Ability effects still draw; they stop lighting floor and heroes. Light count grows with fight size. Flip 0/1 live to compare.
 
@@ -647,26 +635,21 @@ GameInfo
         r_particle_max_size_cull                     "600"    // Valve: bigger systems "skip culling to save CPU. They will be drawn anyway"
         r_particle_max_texture_layers                "4"      // never below 4 (Infernus/Paige/Drifter effects go blocky)
         r_particle_model_per_thread_count            "64"
-        r_particle_model_new8                        "false"
-        r_particle_skip_postsim                      "true"
         r_physics_particle_op_spawn_scale            "0"
-//[test] r_particle_max_detail_level                 "2"      // settable again since build 6812. Drops the top detail tier of effects. Console must print 2. NEVER 0 (ability visuals go missing).
 
         // --- Scene batching / CPU ---
         sc_aggregate_bvh_threshold                   "256"
         sc_layer_batch_threshold                     "256"
         cl_batch_entity_list_ops_during_latch        "true"   // Valve: "to avoid mutex contention"
         cl_simulate_dormant_entities                 "false"
-        cl_fasttempentcollision                      "1000"
-        cloth_sim_on_tick                            "0"
+        cl_fasttempentcollision                      "1000"   // temp effects (tracers, sparks) do their cheap collision check far less often
         r_vma_defrag_algorithm                       "0"
-        r_renderdoc_auto_shader_pdbs                 "false"
         rtx_dynamic_blas                             "false"
         rtx_force_default_hitgroup                   "true"
         rtx_texture_resolution                       "64"
         v8_maximum_heap_size_mb                      "1024"   // more headroom for script HUD mods
         cl_generate_postdataupdatepreserved          "false"  //[zv] skip update callbacks for entities that did not change. Watch: idle things that stop updating.
-        panorama_min_comp_layer_cache_cost           "0"      //[zv] let the UI cache every composition layer
+        panorama_min_comp_layer_cache_cost           "0"      //[zv] let the UI cache every composition layer. Sqooky: about 300 MB more VRAM.
         panorama_comp_layer_lru_lifetime             "4"      //[zv] keep cached UI layers 4 s (Valve 1). Watch HUD mods / VRAM in long sessions.
 
         // --- Wind and ropes (already invisible: wind strength 0, ropes hidden) ---
@@ -680,10 +663,35 @@ GameInfo
 
         // --- Sound ---
         audio_enable_vmix_mastering                  "false"  //[cheat]
-        audio_enable_spawn_mask_mix_layer            "false"
-        snd_enable_subgraph_corenull_passthrough     "false"
         snd_steamaudio_max_occlusion_samples         "32"     //[cheat]
         snd_steamaudio_num_diffuse_samples           "512"    //[cheat]
+
+        // --- Animation, physics and far health bars (developmentonly + replicated; see README "Replicated lines") ---
+        ik_final_fixup_enable                        "0"      // skips the last IK correction pass. Every pack sets it.
+        skeleton_instance_lod_optimization           "true"   //[zv] computes bones only for the model's current LOD instead of every LOD. Watch for odd poses at a distance.
+        props_break_max_pieces_perframe              "1"      // crates break into at most 1 piece per frame (Valve 16)
+        phys_cull_internal_mesh_contacts             "true"   // skips physics contacts inside meshes
+        citadel_camera_see_distance_max              "7000"   // units farther than this lose their overhead health bar (Valve 20000)
+        debug_draw_enable                            "false"
+
+        // --- [test] One at a time. Each has a stated mechanism and no measurement. ---
+//[test] r_particle_max_detail_level                 "2"      // skips effect parts that need detail level 3. Console must print 2. NEVER 0 (ability visuals go missing).
+//[test] r_late_particle_job_sync                    "1"      // waits for particle jobs later in the frame. In Sqooky, OptiLock and ghempy53. Revert on any crash.
+//[test] citadel_npc_ticks_per_anim_update           "3"      // troopers and other NPCs animate every 3rd tick instead of every 2nd. Nobody ships this.
+//[test] panorama_worldpanel_update_culling          "true"   // stops updating far or tiny health bars. Their numbers can be stale until you get close.
+//[test] phys_threaded_cloth_bone_update             "true"   // the next four move bone/physics work off one thread. Valve ships them off; OptiLock turns them on. Crash risk.
+//[test] phys_threaded_kinematic_bone_update         "true"
+//[test] phys_threaded_transform_update              "true"
+//[test] ragdoll_parallel_pose_control               "true"
+
+        // --- Listed as "Unused" in CompLock's CVAR Index (the game registers them but reads them nowhere, by that index). ---
+        // --- Kept only because alz has them and they cost nothing either way. Not a reason to expect anything from them. ---
+        citadel_tightcamera_alternative              "1"
+        citadel_bullet_shot_offset_fade_time         "0"
+        r_drawtracers_firstperson                    "false"
+        r_size_cull_threshold_shadow                 "2.4"
+        r_particle_skip_postsim                      "true"
+        cloth_sim_on_tick                            "0"
         snd_steamaudio_reverb_order_rendering        "0"
 
         // ===== end of apex block. Everything from here down is Valve's stock ConVars block, untouched. =====

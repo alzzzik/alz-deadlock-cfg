@@ -11,7 +11,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
 | `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
-| `apex-testing/gameinfo.gi` + `apex-testing/video.txt` | **Newest candidate (2026-11-15, build 6861).** alz rebuilt with every line checked by script against Valve's convar dump: 61 dead lines removed, harmful lines dropped, 10 new lines added. Untested on alz's PC. See [the apex report](research/reports/Apex%20rebuild%202026-11-15.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex-testing/gameinfo.gi` with `stable/video.txt`. |
+| `apex-testing/gameinfo.gi` + `apex-testing/video.txt` | **Newest candidate (2026-11-15, build 6861).** alz rebuilt with every line checked by script against Valve's convar dump and then re-read against the community's convar descriptions: dead and backwards lines removed, harmful lines dropped, a few new lines added. Untested on alz's PC. See [the apex report](research/reports/Apex%20rebuild%202026-11-15.md) and [the r2 convar review](research/reports/Convar%20review%20r2.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex-testing/gameinfo.gi` with `stable/video.txt`. |
 | `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground: an exact copy of `alz/` plus 9 zero-visual lines from CompLock (deadlockconfig.com), tagged `[cl1]` in `gameinfo.gi`. `video.txt` is identical to `alz/`. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
@@ -40,6 +40,13 @@ outside `ConVars`. Run it after a game update:
 ```bash
 python3 tools/lint.py apex-testing/gameinfo.gi --video apex-testing/video.txt
 ```
+
+## Replicated lines
+
+Some `developmentonly` convars are also `replicated` (the server can set them). Sources disagree on whether a
+`gameinfo.gi` value for these survives joining a match: Deadlock Mod Manager treats them as server-owned, CompLock's
+CVAR Index marks them as settable and not locked online, and several have visible effects in real matches.
+`apex-testing` keeps the useful ones in their own group. `tools/lint.py` lists them separately.
 
 ## Launch options
 

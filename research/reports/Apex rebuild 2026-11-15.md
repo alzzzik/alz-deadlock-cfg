@@ -4,6 +4,9 @@
 harmful lines dropped, and a small set of new lines added. Nothing in it has been benchmarked on alz's PC yet.
 It was built to be the best starting point for testing, not as a measured result.
 
+> **Superseded in part by [Convar review r2](Convar%20review%20r2.md) (2026-11-16):** replicated lines are no longer
+> treated as dead, more lines were removed after reading what they do, and the line counts below changed.
+
 ## What was checked, and how
 
 - **Game state:** current build is 6861 (2026-11-11). Stock `gameinfo.gi` has not changed since build 6801. The convar
