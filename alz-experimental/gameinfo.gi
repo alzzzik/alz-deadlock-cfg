@@ -596,7 +596,6 @@ GameInfo
         citadel_camera_listening_offset         "-1"
         citadel_camera_pitch_default            "0"
         citadel_camera_see_distance_max         "7000"
-        citadel_shoot_forward_offset            "0"
         citadel_stuck_camera_trace_extra_length "0"
         citadel_tightcamera_alternative         "1"
         nav_edit_use_camera                     "0"
