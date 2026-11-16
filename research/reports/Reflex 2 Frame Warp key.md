@@ -113,3 +113,25 @@ have measured worse on alz's PC twice.
   be set from the console, an autoexec or a `+` launch option instead.
 - 1,762 client-side convars that no pack and no earlier note mentions were listed and read. No unused performance
   switch stood out; the interesting names are debug views, tools or already at their fast setting.
+
+## The best measured, zero-visual gain is still a mod, and its number went up
+
+[CompLock re-ran its benchmark](https://deadlockconfig.com/docs/benchmarks/) on 2026-11-16 (build 6861, 9800X3D +
+RX 9070, Linux, Vulkan, 5 replayed team fights, 48 launches, 95% intervals). Per mod, against the plain game:
+
+| Mod | Average | 1% low | Looks or sounds different? |
+|---|---|---|---|
+| Sound stack update cap (`soundcap.vpk`) | +9.7% ± 1.1 | +11.1% ± 1.2 | No. Each playing sound recomputes position and volume every 15-17 ms instead of every frame. |
+| Particle Pruning (stock tracers) | +7.7% ± 1.1 | +5.1% ± 1.2 | Yes, fewer effect pieces |
+| HUD++ | +7.9% ± 1.1 | +8.1% ± 1.2 | Yes, a different HUD |
+| Cloth off | +2.8% ± 1.1 | +3.4% ± 1.2 | Yes |
+| CompLock's whole `gameinfo.gi` vs stock | +16.3% | +14.3% | Yes (mostly lines alz already has) |
+
+The sound cap is the only entry that is both the largest and invisible, and it is a single file that touches no HUD,
+model or particle, so it should sit beside alz's other mods. It was +6.7% / +6.3% a week earlier. The caveats are
+the same as before: one Linux PC, replays, CPU-bound at low settings. On a 5700X, which is more CPU-bound than a
+9800X3D, the share of frame time spent on sound is likely similar or larger, but that is an inference.
+
+A related convar exists and nobody tunes it: Valve's own block sets `snd_soundmixer_update_maximum_frame_rate "0"`
+(no limit; the code default is 10). It caps how often the mix groups update, not the per-sound work the mod caps, so
+the expected gain is much smaller. Untested.
