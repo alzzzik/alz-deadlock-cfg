@@ -140,6 +140,7 @@ GameInfo
     {
         AppID        "103371621"
         SupportsDLSS "1"
+//[test] ReflexLateWarp "1"   // Reflex 2 Frame Warp switch found in the renderer binaries. Needs nvngx_latewarp.dll, which Valve does not ship. Read research/reports/Reflex 2 Frame Warp key.md first.
     }
 
     Engine2
