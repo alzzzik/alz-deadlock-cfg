@@ -21,6 +21,11 @@ must not move, depth, motion vectors and the camera matrices of the rendered and
 integration by Valve, in both the DX11 and the Vulkan renderer. It is present in the oldest build in the checked
 history (6763, 2026-10-08); how much older it is was not checked.
 
+The same strings (48 Late Warp lines and the `NVNGX/ReflexLateWarp` key) are in the DX11 renderer of
+[CS2](https://github.com/SteamDatabase/GameTracking-CS2) and [Dota 2](https://github.com/SteamDatabase/GameTracking-Dota2)
+and in CS2's Vulkan renderer, so this is shared Source 2 engine code, not a Deadlock experiment. Neither game's stock
+`gameinfo.gi` sets the key either.
+
 Stock `gameinfo.gi` has only `AppID` and `SupportsDLSS` in its `NVNGX` block, so the feature is off for everyone.
 `NVNGX` is **not** one of the seven sections named in Valve's matchmaking message. A second undocumented key sits
 beside it: `NVNGX/DLSSDefaultPreset`.
