@@ -1,4 +1,4 @@
-// alz deadlock cfg - apex (audited rebuild of alz for build 6861, 2026-11-15). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - apex-testing (audited rebuild of alz for build 6861, 2026-11-15). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo

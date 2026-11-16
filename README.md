@@ -11,7 +11,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
 | `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
-| `apex/gameinfo.gi` + `apex/video.txt` | **Newest candidate (2026-11-15, build 6861).** alz rebuilt with every line checked by script against Valve's convar dump: 61 dead lines removed, harmful lines dropped, 10 new lines added. Untested on alz's PC. See [the apex report](research/reports/Apex%20rebuild%202026-11-15.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex/gameinfo.gi` with `stable/video.txt`. |
+| `apex-testing/gameinfo.gi` + `apex-testing/video.txt` | **Newest candidate (2026-11-15, build 6861).** alz rebuilt with every line checked by script against Valve's convar dump: 61 dead lines removed, harmful lines dropped, 10 new lines added. Untested on alz's PC. See [the apex report](research/reports/Apex%20rebuild%202026-11-15.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex-testing/gameinfo.gi` with `stable/video.txt`. |
 | `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground: an exact copy of `alz/` plus 9 zero-visual lines from CompLock (deadlockconfig.com), tagged `[cl1]` in `gameinfo.gi`. `video.txt` is identical to `alz/`. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
@@ -38,14 +38,14 @@ out of range, equal to the default, duplicated, or overridden by a saved value o
 outside `ConVars`. Run it after a game update:
 
 ```bash
-python3 tools/lint.py apex/gameinfo.gi --video apex/video.txt
+python3 tools/lint.py apex-testing/gameinfo.gi --video apex-testing/video.txt
 ```
 
 ## Launch options
 
 `-novid +fps_max 0 +fps_max_ui 0`. The two `+` options are how Valve's own tooltip says to go beyond the menu sliders,
 and they are needed because `fps_max` is an `archive` convar: the value the game saved last time wins over
-`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex/gameinfo.gi`.
+`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex-testing/gameinfo.gi`.
 
 ## Install
 

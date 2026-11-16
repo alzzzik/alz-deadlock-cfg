@@ -1,6 +1,6 @@
 # apex: an audited rebuild of alz (2026-11-15, build 6861)
 
-`apex/` is alz's setup with every line checked by a script against Valve's data, the dead weight removed, four
+`apex-testing/` is alz's setup with every line checked by a script against Valve's data, the dead weight removed, four
 harmful lines dropped, and a small set of new lines added. Nothing in it has been benchmarked on alz's PC yet.
 It was built to be the best starting point for testing, not as a measured result.
 
@@ -84,6 +84,25 @@ bigger buffer pools). Engine-section changes have measured worse on this PC twic
 - **OptiLock** and **compylock** have had no `gameinfo.gi` change since 2026-10-26 and 2026-10-10.
 - All four packs still set `sc_instanced_mesh_motion_vectors 0`. apex goes against them on purpose because it ships
   DLSS; if you run without an upscaler, adding the line back is reasonable.
+
+## CompLock's `gameinfo.gi`, re-checked 2026-11-15
+
+The file the site's Pack Builder serves today (158 ConVars lines, 81 of them not Valve's) was run through
+`tools/lint.py` and compared with apex line by line. It is the file the
+[2026-11-09 report](CompLock%20deadlockconfig%20com.md) reviewed, minus `r_particle_min_timestep`.
+
+- 25 of its 81 lines do nothing in a live match: 21 are server-replicated (`ik_*`, `animgraph_footlock_*`,
+  `skeleton_instance_lod_optimization`, ...), 3 restate the default, 1 is below the minimum.
+- Outside ConVars it only sets the three fog switches, which apex already has.
+- Of the lines apex doesn't have, none is a zero-visual gain: they either hide something (`r_farz`/`r_mapextents 7000`,
+  `r_morphing_enabled false`, `fx_drawmetalspark false`, `citadel_boss_glow_disabled 1`, `cl_disable_ragdolls true`,
+  bilinear filtering), change the HUD (`citadel_damage_indicator_*`, cumulative damage text), clash with FOV mods
+  (`default_fov 0`, `viewmodel_fov 0`), or tune things apex already hides (hair, ropes, clutter).
+- Everything zero-visual in it is already in apex: the entity-callback line, the two UI cache lines and the wind/rope lines.
+
+So nothing was added from it. If you ever want to trade looks for FPS, the two with numbers behind them are
+`cl_disable_ragdolls true` (+2.6% average, no gain in 1% lows; risks Doorman's ult indicator) and cloth off
+(+4.0% average when CPU-bound; needs CompLock's No Cloth VPK, which replaces hero models).
 
 ## Evidence status
 
