@@ -545,8 +545,9 @@ GameInfo
     {
         // =====================================================================================
         // apex block. Every line below was checked against Valve's convar dump (build 6861):
-        // it exists, is not gameinfo_cannot_override, is not server-replicated, is inside its
-        // min/max, differs from Valve's default and is not owned by video.txt.
+        // it exists, is not gameinfo_cannot_override, is inside its min/max, differs from Valve's
+        // default and is not owned by video.txt. Replicated lines are kept only in their own group.
+        // Full reasoning for every line: apex-testing/NOTES.md
         // Tags:  [arch]  archive convar: this is only a DEFAULT. A value saved in
         //                machine_convars.vcfg wins. Use the launch options in README to force it.
         //        [cheat] cheat-flagged: applies at startup from this file; can't be changed live.
