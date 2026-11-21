@@ -1,7 +1,7 @@
 # apex-testing: handoff notes
 
 Read this first if you are an AI (or a person) picking up work on `apex-testing/`. It explains what the variant is,
-why every line is there, what is still unknown, and how to continue. Last updated 2026-11-18, game build 6861.
+why every line is there, what is still unknown, and how to continue. Last updated 2026-11-21, game build 6861.
 
 ## 1. The owner and the rules
 
@@ -33,8 +33,9 @@ why every line is there, what is still unknown, and how to continue. Last update
 `apex-testing/video.txt` = `alz/video.txt` minus `setting.r_particle_depth_feathering` (removed from the game).
 The user must copy in their own `VendorID`, `DeviceID`, `setting.defaultres`, `setting.defaultresheight`.
 
-**Status: never run on alz's PC.** Every claim below is from Valve's data, community descriptions or other people's
-measurements.
+**Status: first measured on alz's PC on 2026-11-20 (3 matches, see section 8b): not worse than alz, slightly better
+so far, not yet significant.** Every per-line claim below is from Valve's data, community descriptions or other
+people's measurements.
 
 ## 3. How the game treats a line (this decides whether a line can work at all)
 
@@ -246,6 +247,29 @@ lines), and lines equal to the default.
   `r_citadel_disable_particle_lights`, the five restored replicated lines, then `sc_instanced_mesh_motion_vectors`
   (add `"0"` back).
 - Promote a line to stable/alz only after it wins in real matches.
+
+## 8b. Results log
+
+Measured by alz with a frame-time tracker in real matches on `dl_midtown`, `video.txt` the same for both variants.
+
+| Variant | Sessions | Minutes | Avg FPS | 1% low | p99 frame time |
+|---|---|---|---|---|---|
+| alz | 57 | 1491 | 268 | 82 | 12.14 ms |
+| apex-testing (r2, 2026-11-20) | 3 | 93 | 277 (+3.4%) | 87 (+6.1%) | 11.48 ms (-5.4%) |
+
+Per-session numbers shown: apex 296/100, 269/87, 277/83 (avg / 1% low, Nov 20); alz's last three 289/99, 273/86
+(Nov 13) and 235/84 (Nov 20, same day as the apex runs).
+
+**Reading (2026-11-21):** apex is **not worse**, which already clears the bar the old experimental bundle failed
+(-40 FPS). The lead itself is **not yet distinguishable from match-to-match noise**: single alz sessions range from
+235 to 289 avg and 84 to 99 1% low, so with only 3 apex sessions the standard error of apex's average is roughly
+15 FPS for avg and 5 FPS for 1% low, about the size of the gap. The direction (avg, 1% low and p99 all better) is
+encouraging.
+
+**Next:** keep playing apex until about 8-10 sessions, ideally alternating with alz on the same days (patches and
+server load shift both). If the 1% low lead holds, make apex the daily driver and only then start the `[test]` lines
+or the sound cap mod, one at a time, each for several sessions. Don't change anything else while collecting this
+baseline, or the comparison is confounded.
 
 ## 9. Tools and data sources for the next session
 
