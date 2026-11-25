@@ -38,3 +38,12 @@ This PC measured 30-40 FPS lower once before when liv's engine sections were swa
      (`engine_max_ticks_to_simulate`, `cl_particle_sim_fallback_*`, `r_limit_particle_job_duration`) and
      `panorama_min_comp_layer_cache_cost 0` interacting with HUD++'s own caching.
 4. Quick check for the GPU-ceiling theory with CompLock's own file: GPU usage in a quiet lane moment. Near 99% = theory holds.
+
+## Results log
+
+| Date | Map | Minutes | Avg FPS | 1% low | p99 frame time |
+|---|---|---|---|---|---|
+| 2026-11-25 | dl_midtown | 28 | 354 | 105 | 9.6 ms |
+
+Reading after 1 session: average 354 vs CompLock's 191-195 (+80%), 1% low 105 vs ~107 (same, within CompLock's
+99-116 range). Supports the GPU-ceiling theory. One session only; keep going to 3-5.
