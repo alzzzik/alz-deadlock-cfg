@@ -3,7 +3,8 @@
 Consolidated 2026-10-15, game build ~6779. Everything here was checked against Valve's own data (the convar dump,
 the stock `gameinfo.gi`, the matchmaking strings) wherever possible. Player reports are labelled as such.
 
-**Newer reports:** [Convar review r2 (2026-11-16)](reports/Convar%20review%20r2.md): every apex line re-read against CompLock's CVAR Index, DMM's notes and Sqooky's comments; three corrections to the first pass.
+**Newer reports:** [Original research playbook (2026-11-25)](reports/Original%20research%20playbook.md): how CompLock finds its wins, the Windows tools and benchmark method to do the same, and a ranked list of 10 experiments.
+[Convar review r2 (2026-11-16)](reports/Convar%20review%20r2.md): every apex line re-read against CompLock's CVAR Index, DMM's notes and Sqooky's comments; three corrections to the first pass.
 [Reflex 2 Frame Warp key (2026-11-16)](reports/Reflex%202%20Frame%20Warp%20key.md): a hidden `NVNGX/ReflexLateWarp` switch and a full Late Warp integration in the renderer binaries; untested, with a two-step test.
 [apex rebuild (2026-11-15)](reports/Apex%20rebuild%202026-11-15.md): the script-audited variant, the `archive` saved-value finding, build 6861 status.
 [CompLock / deadlockconfig.com (2026-11-09)](reports/CompLock%20deadlockconfig%20com.md): the CompLock pack, its benchmark, and what suits alz.
