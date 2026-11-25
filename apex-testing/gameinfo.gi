@@ -1,4 +1,4 @@
-// alz deadlock cfg - apex-testing (audited rebuild of alz for build 6861, 2026-11-15). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - apex-testing (audited rebuild of alz for build 6861, 2026-11-15; re-checked against build 6868, 2026-11-25). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -546,7 +546,7 @@ GameInfo
         // =====================================================================================
         // apex block. Every line below was checked against Valve's convar dump (build 6861):
         // it exists, is not gameinfo_cannot_override, is inside its min/max, differs from Valve's
-        // default and is not owned by video.txt. Replicated lines are kept only in their own group.
+        // default and is not owned by video.txt. Re-checked against build 6868 on 2026-11-25: no apex line changed flags or was removed. Replicated lines are kept only in their own group.
         // Full reasoning for every line: apex-testing/NOTES.md
         // Tags:  [arch]  archive convar: this is only a DEFAULT. A value saved in
         //                machine_convars.vcfg wins. Use the launch options in README to force it.
@@ -684,6 +684,11 @@ GameInfo
 //[test] phys_threaded_kinematic_bone_update         "true"
 //[test] phys_threaded_transform_update              "true"
 //[test] ragdoll_parallel_pose_control               "true"
+        // --- [test] added 2026-11-25 (build 6868), from CompLock's 18-20 Nov updates. Same rule: one at a time. ---
+//[test] citadel_camera_soft_collision               "0"      // skips the 128 camera-to-wall traces run every frame. Feel: the camera snaps in at walls instead of easing in. Replicated: check the console value in a real match.
+//[test] cloth_update                                "false"  // stops cloth simulation. Coats, capes and skirts hang frozen in their default pose. CompLock measured +2.8% avg / +3.4% 1% low, but with a mod that also strips the cloth off the models.
+        // [test] sc_layer_batch_threshold_fullsort 80 (Valve's code default; CompLock moved 20 -> 80): Valve's stock block below sets 20 and a later line wins,
+        //        so to try it, change the "20" on the sc_layer_batch_threshold_fullsort line in Valve's block instead of adding a line here.
 
         // --- Listed as "Unused" in CompLock's CVAR Index (the game registers them but reads them nowhere, by that index). ---
         // --- Kept only because alz has them and they cost nothing either way. Not a reason to expect anything from them. ---
@@ -699,13 +704,13 @@ GameInfo
 
         rate
         {
-            min     "98304"
+            min     "133120"
             default "786432"
             max     "1000000"
         }
 
         // Networking - General
-        sv_minrate                   "98304"
+        sv_minrate                   "133120"
         sv_maxunlag                  "0.500"
         sv_maxunlag_player           "0.200"
         sv_lagcomp_filterbyviewangle "false"

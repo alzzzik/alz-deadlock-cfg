@@ -1,7 +1,8 @@
 # apex-testing: handoff notes
 
 Read this first if you are an AI (or a person) picking up work on `apex-testing/`. It explains what the variant is,
-why every line is there, what is still unknown, and how to continue. Last updated 2026-11-21, game build 6861.
+why every line is there, what is still unknown, and how to continue. Last updated 2026-11-25, re-checked against game build 6868 (see
+`research/reports/Late November check 2026-11-25.md`).
 
 ## 1. The owner and the rules
 
@@ -173,6 +174,9 @@ Wind strength is 0 and ropes aren't drawn, so these only remove leftover simulat
 | `citadel_npc_ticks_per_anim_update 3` | Troopers animate every 3rd tick, not every 2nd. Nobody ships it. | Choppier trooper animation. |
 | `panorama_worldpanel_update_culling true` | Stops updating far/tiny world panels. | Health-bar numbers stale until close. |
 | `phys_threaded_cloth_bone_update`, `phys_threaded_kinematic_bone_update`, `phys_threaded_transform_update`, `ragdoll_parallel_pose_control` (all `true`) | Move bone/physics work to several threads. Valve ships them off; OptiLock turns them on. | Valve leaving them off suggests unfinished. Crash risk. |
+| `citadel_camera_soft_collision 0` **new 2026-11-25** | Skips the 128 camera-to-wall traces per frame (CompLock 2026-11-18). | Camera snaps in at walls instead of easing. Replicated: may be server-owned; check the console in a real match. |
+| `cloth_update false` **new 2026-11-25** | Stops cloth simulation (CompLock: +2.8% / +3.4%, measured with a model mod that also strips the cloth). | On its own, capes and coats freeze in their default pose. |
+| `sc_layer_batch_threshold_fullsort 80` **new 2026-11-25** (comment only) | Valve's code default; CompLock moved its value 20 -> 80. | Valve's stock block sets 20 later in the file and wins, so try it by editing that line, not by adding one. |
 
 ### Filed as "Unused" by CompLock's CVAR Index (kept, expect nothing)
 `citadel_tightcamera_alternative 1`, `citadel_bullet_shot_offset_fade_time 0`, `r_drawtracers_firstperson false`,
@@ -209,6 +213,9 @@ lines), and lines equal to the default.
 
 ## 6. What was considered and rejected
 
+- 2026-11-25: `citadel_unit_status_breakpoint_line_small_amt 1000000` (hides health-bar tick lines = information),
+  `citadel_use_pvs_for_players` (server-only), `citadel_portrait_world_renderer_off` (menu-only).
+
 - Anything that hides information: `r_farz`/`r_mapextents` 7000, `cl_ragdoll_limit 0`, `cl_disable_ragdolls`,
   `citadel_boss_glow_disabled`, `panorama_disable_blur`/box shadow/transitions, `r_particle_max_detail_level 0`,
   `cl_particle_max_count`, `r_particle_timescale`, `r_morphing_enabled false`, `fx_drawmetalspark false`,
@@ -234,7 +241,7 @@ lines), and lines equal to the default.
    CompLock benchmark 2026-11-16: +9.7% avg / +11.1% 1% low, nothing looks or sounds different. Single file
    (`soundstacks/soundstacks_citadel_base_3d.vsndstck_c`). Largest invisible gain anyone has measured. Recheck after
    every patch.
-3. The `[test]` lines in section 4.
+3. The `[test]` lines in section 4 (three new ones since 2026-11-25).
 4. Settle the replicated / cheat question: in a matchmade game, type `props_break_max_pieces_perframe` and
    `r_rendersun` in the console. If they print Valve's defaults, those groups are dead online.
 
