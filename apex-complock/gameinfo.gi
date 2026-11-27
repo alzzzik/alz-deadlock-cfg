@@ -1,4 +1,4 @@
-// alz deadlock cfg - apex-testing (audited rebuild of alz for build 6861, 2026-11-15). github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
+// alz deadlock cfg - apex-complock (2026-11-25): apex-testing's gameinfo.gi + the CPU-side lines from CompLock's gameinfo.gi, for use WITH CompLock's mod paks. github.com/alzzzik/alz-deadlock-cfg - GPL-3.0
 
 
 GameInfo
@@ -546,7 +546,7 @@ GameInfo
         // =====================================================================================
         // apex block. Every line below was checked against Valve's convar dump (build 6861):
         // it exists, is not gameinfo_cannot_override, is inside its min/max, differs from Valve's
-        // default and is not owned by video.txt. Replicated lines are kept only in their own group.
+        // default and is not owned by video.txt. Re-checked against build 6868 on 2026-11-25: no apex line changed flags or was removed. Replicated lines are kept only in their own group.
         // Full reasoning for every line: apex-testing/NOTES.md
         // Tags:  [arch]  archive convar: this is only a DEFAULT. A value saved in
         //                machine_convars.vcfg wins. Use the launch options in README to force it.
@@ -670,10 +670,49 @@ GameInfo
         // --- Animation, physics and far health bars (developmentonly + replicated; see README "Replicated lines") ---
         ik_final_fixup_enable                        "0"      // skips the last IK correction pass. Every pack sets it.
         skeleton_instance_lod_optimization           "true"   //[zv] computes bones only for the model's current LOD instead of every LOD. Watch for odd poses at a distance.
-        props_break_max_pieces_perframe              "1"      // crates break into at most 1 piece per frame (Valve 16)
         phys_cull_internal_mesh_contacts             "true"   // skips physics contacts inside meshes
         citadel_camera_see_distance_max              "7000"   // units farther than this lose their overhead health bar (Valve 20000)
         debug_draw_enable                            "false"
+
+        // --- [cl2] From CompLock's gameinfo.gi (build 6866 pack, 2026-11-24). Kept so that CompLock's mods run with the same ---
+        // --- engine settings they were measured with. CPU-side; some small visual costs, noted per line. See apex-complock/NOTES.md. ---
+        // HUD++ support (the Pack Builder writes these for HUD++ with cumulative damage numbers)
+        citadel_damage_text_batching_window_individual   "2"
+        citadel_unit_status_healthbar_highlight_speed    "100"
+        citadel_damage_text_cumulative_mode              "1"      //[arch] HUD++ cumulative damage. Saved value wins; set it in HUD++ if it doesn't stick.
+        citadel_action_refresh_interval                  "0.11"   // Valve 0.1
+        panorama_panel_occlusion                         "0"      // Valve true. CompLock ships it; no description from Valve.
+        // Animation: no inverse kinematics, no foot locking, no facial morphs. Feet don't adapt to slopes/steps; faces don't animate.
+        // CompLock per-line numbers (their CPU-bound rig): r_morphing_enabled +2.1%, animgraph_footlock_enabled +2.0%, ik_enable +1.4%.
+        ik_enable                                        "false"
+        ik_constraints_enabled                           "false"
+        ik_fabrik_backwards_enabled                      "false"
+        ik_fabrik_forwards_enabled                       "false"
+        ik_planetilt_enable                              "false"
+        animgraph_footlock_enabled                       "false"
+        animgraph_footlock_calculate_tilt                "false"
+        animgraph_footlock_ground_roll                   "false"
+        animgraph_footlock_hip_offset_enable             "false"
+        animgraph_footlock_ik_enable                     "false"
+        animgraph_footlock_trace_ground_enabled          "false"
+        animgraph_footlock_use_hip_shift                 "false"
+        animgraph_slowdownonslopes_enabled               "false"
+        r_morphing_enabled                               "false"  //[cheat]
+        r_smooth_morph_normals                           "0"
+        // Camera, cloth, props
+        citadel_camera_soft_collision                    "0"      // no 128 camera traces per frame; camera snaps in at walls
+        citadel_camera_soft_collision_multi_thread       "0"
+        cloth_update                                     "false"  // capes and coats hang frozen (CompLock's file had this on during your CompLock sessions)
+        props_break_max_pieces_perframe                  "0"      // apex had 1; crates break with no pieces
+        // Small render-side extras
+        r_haircull_percent                               "100"
+        r_hair_indirect_transmittance                    "false"
+        r_ropetranslucent                                "false"
+        r_monitor_3dskybox                               "0"
+        r_character_decal_monitor_render_res             "64"
+        r_impacts_alt_orientation                        "false"
+        sc_clutter_density_full_size                     "0.5"
+        sc_clutter_density_none_size                     "1"
 
         // --- [test] One at a time. Each has a stated mechanism and no measurement. ---
 //[test] r_particle_max_detail_level                 "2"      // skips effect parts that need detail level 3. Console must print 2. NEVER 0 (ability visuals go missing).
@@ -684,6 +723,9 @@ GameInfo
 //[test] phys_threaded_kinematic_bone_update         "true"
 //[test] phys_threaded_transform_update              "true"
 //[test] ragdoll_parallel_pose_control               "true"
+        // --- [test] added 2026-11-25 (build 6868), from CompLock's 18-20 Nov updates. Same rule: one at a time. ---
+        // [test] sc_layer_batch_threshold_fullsort 80 (Valve's code default; CompLock moved 20 -> 80): Valve's stock block below sets 20 and a later line wins,
+        //        so to try it, change the "20" on the sc_layer_batch_threshold_fullsort line in Valve's block instead of adding a line here.
 
         // --- Listed as "Unused" in CompLock's CVAR Index (the game registers them but reads them nowhere, by that index). ---
         // --- Kept only because alz has them and they cost nothing either way. Not a reason to expect anything from them. ---
@@ -699,13 +741,13 @@ GameInfo
 
         rate
         {
-            min     "98304"
+            min     "133120"
             default "786432"
             max     "1000000"
         }
 
         // Networking - General
-        sv_minrate                   "98304"
+        sv_minrate                   "133120"
         sv_maxunlag                  "0.500"
         sv_maxunlag_player           "0.200"
         sv_lagcomp_filterbyviewangle "false"
@@ -783,7 +825,7 @@ GameInfo
 
         audio_enclosure_calc_enabled "0"
 
-        sc_layer_batch_threshold_fullsort "20"
+        sc_layer_batch_threshold_fullsort "80"   // [cl2] Valve stock 20; CompLock and Valve's code default 80
 
         // Perf/Parallelism
         iv_parallel_restore "1"
