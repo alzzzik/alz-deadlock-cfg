@@ -1,5 +1,8 @@
 # apex-complock: notes
 
+> 2026-11-27: apex-complock replaced apex-testing in this repo. apex-testing's per-line notes now live in
+> [apex-testing-NOTES.md](apex-testing-NOTES.md); the old files are in git history (commit 8042cb9).
+
 **What it is:** `apex-testing/gameinfo.gi` with CompLock's CPU-side `gameinfo.gi` lines added (tagged `[cl2]`), meant to
 run **together with CompLock's mod paks** in `game/citadel/addons`. Built 2026-11-25 against build 6868.
 

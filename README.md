@@ -11,8 +11,7 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
 | `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
-| `apex-testing/gameinfo.gi` + `apex-testing/video.txt` | **Newest candidate (2026-11-15, build 6861; re-checked against 6868 on 2026-11-25).** alz rebuilt with every line checked by script against Valve's convar dump and then re-read against the community's convar descriptions: dead and backwards lines removed, harmful lines dropped, a few new lines added. First 3 matches on alz's PC: not worse than alz, slightly better, not yet significant (NOTES section 8b). Reasoning for every line: [apex-testing/NOTES.md](apex-testing/NOTES.md). NVIDIA RTX only as shipped (DLSS); on other GPUs pair `apex-testing/gameinfo.gi` with `stable/video.txt`. |
-| `apex-complock/gameinfo.gi` + `apex-complock/video.txt` | **New 2026-11-25, untested.** For use **with CompLock's mod paks** (Particle Pruning, Sound stack update cap, HUD++). apex-testing's `gameinfo.gi` plus CompLock's CPU-side lines, aimed at keeping CompLock's better 1% lows while getting apex's average back. Details and test plan: [apex-complock/NOTES.md](apex-complock/NOTES.md). NVIDIA RTX only as shipped (DLSS 1.7x). |
+| `apex-complock/gameinfo.gi` + `apex-complock/video.txt` | **Newest candidate (2026-11-25, build 6868). alz's current daily config.** For use **with CompLock's mod paks** (Particle Pruning, Sound stack update cap, HUD++). The old apex-testing `gameinfo.gi` (every line script-checked against Valve's convar dump) plus CompLock's CPU-side lines. Keeps CompLock's 1% lows with apex's average (first session: 354 avg / 105 1% low). Per-line reasoning for the apex base: [apex-complock/apex-testing-NOTES.md](apex-complock/apex-testing-NOTES.md). Details and test plan: [apex-complock/NOTES.md](apex-complock/NOTES.md). NVIDIA RTX only as shipped (DLSS 1.7x). |
 | `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground: an exact copy of `alz/` plus 9 zero-visual lines from CompLock (deadlockconfig.com), tagged `[cl1]` in `gameinfo.gi`. `video.txt` is identical to `alz/`. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
@@ -39,7 +38,7 @@ out of range, equal to the default, duplicated, or overridden by a saved value o
 outside `ConVars`. Run it after a game update:
 
 ```bash
-python3 tools/lint.py apex-testing/gameinfo.gi --video apex-testing/video.txt
+python3 tools/lint.py apex-complock/gameinfo.gi --video apex-complock/video.txt
 ```
 
 ## Replicated lines
@@ -47,13 +46,13 @@ python3 tools/lint.py apex-testing/gameinfo.gi --video apex-testing/video.txt
 Some `developmentonly` convars are also `replicated` (the server can set them). Sources disagree on whether a
 `gameinfo.gi` value for these survives joining a match: Deadlock Mod Manager treats them as server-owned, CompLock's
 CVAR Index marks them as settable and not locked online, and several have visible effects in real matches.
-`apex-testing` keeps the useful ones in their own group. `tools/lint.py` lists them separately.
+`apex-complock` keeps the useful ones in their own group. `tools/lint.py` lists them separately.
 
 ## Launch options
 
 `-novid +fps_max 0 +fps_max_ui 0`. The two `+` options are how Valve's own tooltip says to go beyond the menu sliders,
 and they are needed because `fps_max` is an `archive` convar: the value the game saved last time wins over
-`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex-testing/gameinfo.gi`.
+`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex-complock/gameinfo.gi`.
 
 ## Install
 
