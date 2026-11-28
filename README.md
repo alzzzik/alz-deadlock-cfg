@@ -10,12 +10,15 @@ particle mods installed through Deadlock Mod Manager (DMM) should keep working.
 | Folder | Who it's for |
 |---|---|
 | `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
-| `alz/gameinfo.gi` + `alz/video.txt` | alz's own setup: the same `gameinfo.gi` as stable, but `video.txt` uses DLSS at 1.7x (`r_citadel_upscaling 4`, `dlss_settings_mode 2`). NVIDIA RTX only. |
 | `apex-complock/gameinfo.gi` + `apex-complock/video.txt` | **Newest candidate (2026-11-25, build 6868). alz's current daily config.** For use **with CompLock's mod paks** (Particle Pruning, Sound stack update cap, HUD++). The old apex-testing `gameinfo.gi` (every line script-checked against Valve's convar dump) plus CompLock's CPU-side lines. Keeps CompLock's 1% lows with apex's average (first session: 354 avg / 105 1% low). Per-line reasoning for the apex base: [apex-complock/apex-testing-NOTES.md](apex-complock/apex-testing-NOTES.md). Details and test plan: [apex-complock/NOTES.md](apex-complock/NOTES.md). NVIDIA RTX only as shipped (DLSS 1.7x). |
-| `alz-experimental/gameinfo.gi` + `alz-experimental/video.txt` | Testing ground: an exact copy of `alz/` plus 9 zero-visual lines from CompLock (deadlockconfig.com), tagged `[cl1]` in `gameinfo.gi`. `video.txt` is identical to `alz/`. Untested. |
 
 The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
 [`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental), out of the way.
+
+`alz/` (stable's `gameinfo.gi` with DLSS 1.7x) and `alz-experimental/` (alz plus 9 CompLock lines) were archived on
+2026-11-28 after apex-complock beat alz on 1% lows over 18 sessions (about 106 vs 82). They live on the
+[`archive/alz`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz) and
+[`archive/alz-experimental`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz-experimental) branches.
 
 ### Setting up `video.txt`
 
