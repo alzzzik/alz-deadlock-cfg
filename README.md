@@ -1,141 +1,44 @@
 # alz deadlock cfg
 
-A Deadlock `gameinfo.gi` FPS config by alz.
+A Deadlock `gameinfo.gi` FPS config that keeps mods working (skins, HUD and particle mods through Deadlock Mod Manager).
 
-**Goal:** as much FPS as possible while staying **mod compatible**: skins, HUD/QoL mods and
-particle mods installed through Deadlock Mod Manager (DMM) should keep working.
+## Configs
 
-## Variants
-
-| Folder | Who it's for |
+| Folder | Use it if |
 |---|---|
-| `stable/gameinfo.gi` + `stable/video.txt` | **Everyone. Start here.** Works with mods. `video.txt` uses Stretch at 100% render scale (no upscaler), so it works on any GPU and looks like what most people already run. |
-| `apex-complock/gameinfo.gi` + `apex-complock/video.txt` | **Newest candidate (2026-11-25, build 6868). alz's current daily config.** For use **with CompLock's mod paks** (Particle Pruning, Sound stack update cap, HUD++). The old apex-testing `gameinfo.gi` (every line script-checked against Valve's convar dump) plus CompLock's CPU-side lines. Keeps CompLock's 1% lows with apex's average (first session: 354 avg / 105 1% low). Per-line reasoning for the apex base: [apex-complock/apex-testing-NOTES.md](apex-complock/apex-testing-NOTES.md). Details and test plan: [apex-complock/NOTES.md](apex-complock/NOTES.md). NVIDIA RTX only as shipped (DLSS 1.7x). |
+| [`stable/`](stable) | You want a safe start. Any GPU, any mods. |
+| [`apex-complock/`](apex-complock) | You run CompLock's mod paks (Particle Pruning, Sound stack cap, HUD++) on an NVIDIA RTX card. This is alz's daily config: about 106 1% lows vs 82 for the old alz config over 18 sessions. |
 
-The old `experimental` variant (about −40 FPS vs stable when tested on 2026-10-20) now lives on the
-[`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental), out of the way.
-
-`alz/` (stable's `gameinfo.gi` with DLSS 1.7x) and `alz-experimental/` (alz plus 9 CompLock lines) were archived on
-2026-11-28 after apex-complock beat alz on 1% lows over 18 sessions (about 106 vs 82). They live on the
-[`archive/alz`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz) and
-[`archive/alz-experimental`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz-experimental) branches.
-
-### Setting up `video.txt`
-
-Copy these lines from **your own** `video.txt` into the new one before using it:
-`VendorID`, `DeviceID`, `setting.defaultres`, `setting.defaultresheight` (they're marked with comments).
-
-After that, change upscaling in the game menu (Settings → Video) if you want more FPS:
-- **NVIDIA RTX:** DLSS. Scaling 1.7x (alz's choice) or 1.5x is a good balance.
-- **AMD / Intel / older NVIDIA:** FSR, or keep Stretch and lower the render scale a bit.
-
-**Full research:** [research/RESEARCH.md](research/RESEARCH.md), with what still gives FPS (cfg, `video.txt`, mods, launch options,
-Windows/driver), what's dead weight, and what costs gameplay.
-
-Every variant's files are named `gameinfo.gi` and `video.txt`, so you can drop them straight in.
-
-## Checking a cfg
-
-`tools/lint.py` reports every `ConVars` line that can't do what it says (removed from the game, blocked, server-owned,
-out of range, equal to the default, duplicated, or overridden by a saved value or `video.txt`) and lists the edits
-outside `ConVars`. Run it after a game update:
-
-```bash
-python3 tools/lint.py apex-complock/gameinfo.gi --video apex-complock/video.txt
-```
-
-## Replicated lines
-
-Some `developmentonly` convars are also `replicated` (the server can set them). Sources disagree on whether a
-`gameinfo.gi` value for these survives joining a match: Deadlock Mod Manager treats them as server-owned, CompLock's
-CVAR Index marks them as settable and not locked online, and several have visible effects in real matches.
-`apex-complock` keeps the useful ones in their own group. `tools/lint.py` lists them separately.
-
-## Launch options
-
-`-novid +fps_max 0 +fps_max_ui 0`. The two `+` options are how Valve's own tooltip says to go beyond the menu sliders,
-and they are needed because `fps_max` is an `archive` convar: the value the game saved last time wins over
-`gameinfo.gi`. The same goes for any line tagged `[arch]` in `apex-complock/gameinfo.gi`.
+Each folder has a `gameinfo.gi` and a `video.txt`, so you can drop them straight in.
 
 ## Install
 
 1. Back up `steamapps/common/Deadlock/game/citadel/gameinfo.gi` and
    `Steam/userdata/<your id>/1422450/local/cfg/video.txt`.
-2. Copy the variant's `gameinfo.gi` and `video.txt` over them (fill in your lines first, see above).
-3. Launch with mods on (DMM or Steam).
-4. Game patches can overwrite `gameinfo.gi`. After an update, copy it in again.
+2. In the new `video.txt`, copy over your own `VendorID`, `DeviceID`, `setting.defaultres` and
+   `setting.defaultresheight` (marked with comments).
+3. Copy both files over the originals.
+4. Launch options: `-novid +fps_max 0 +fps_max_ui 0`.
+5. Game updates can overwrite `gameinfo.gi`. Copy it in again after a patch.
 
-## How it stays mod compatible
+Want more FPS? Turn on an upscaler in Settings → Video: DLSS 1.5x to 1.7x on NVIDIA RTX, FSR on anything else.
 
-The base cfg ran fine without mods but broke when mods were enabled. The stable cfg changes:
+## More
 
-- **SearchPaths** updated to the current format (`Game_UILanguage`, `Game_LowViolence`), with explicit `Mod`/`Write` lines (without them the game crashes with "Unable to read default keybinding configuration" when launched without Deadlock Mod Manager) and
-  `Game citadel/addons` kept, so mods load. This is the most likely fix.
-- **34 lines commented out** with a `//[mods]` prefix, so they're easy to find and restore:
-  - 10 are settings the current game no longer reads (`MaxPreloadTextureResolution`, the
-    `Aggregate*` lines, `PostSimulate`, `r_particle_explicit_fetch`, …), so they did nothing.
-  - 9 set the game's default anyway (`panorama_*` fixes, `r_particle_allowprerender`, …).
-  - 8 were risky with mods or not useful: `r_particle_newinput`, `r_skip_precache_validation_check`,
-    `r_update_particles_on_render_only_frames`, `r_particle_fixedrandomseeds`,
-    `r_draw_particle_children_with_parents`, `default_fov 0` and `viewmodel_fov 0` (conflict with
-    FOV mods), `citadel_video_preset 9` (max is 3).
-    Correction: `r_update_particles_on_render_only_frames true` turned out to be community consensus,
-    so `experimental` turns it back on.
-  - 7 are real engine tweaks. Tested in round 1 and they cost FPS, so they stay off.
-
-## Experiment log
-
-Rounds 2–5 were tested in the `experimental` variant (now on the
-[`experimental` branch](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental)).
-
-
-- **Round 1** (7 engine lines back on: `HDRFrameBuffer 0`, `EnableMixedResolution 1`,
-  `ParticlesFoggedByDefault 0`, `PerVertexLighting 0`, `LayerBatchThresholdFullsort 200`,
-  `LPVEdgeBlending 0`, `EnvironmentMapCacheSize 1024`): works with mods, **a bit less FPS** than stable.
-  Dropped. These stay off.
-- **OptiLock engine sections + this cfg's ConVars**: worked with mods but was 30-40 FPS worse. Dropped.
-- **Round 2 (in `experimental`)**: 29 ConVars that the big config families agree on (the Deadlock Mod Manager
-  "DMM Clean" consensus: 3+ families, 75%+ agreement) plus `r_distancefield_enable 0` and
-  `r_update_particles_on_render_only_frames true`. They render the same things more cheaply. Nothing is hidden,
-  nothing is menu-owned, everything works online. Shadows (cascades, `lb_dynamic_shadow_*`, precomputed shadow maps),
-  lighting/post (directional lightmaps, flickering lights, SSAO blur, bloom scale, fog jitter), models (morphs, hair),
-  world (metal sparks, grass/tree wind), UI (blur, transitions, box shadows).
-- **Round 3 (in `experimental`)**: 6 lines reset to the defaults, marked `//[r3]`: `r_limit_particle_job_duration`,
-  `r_particle_max_size_cull`, `r_texture_budget_threshold`, `r_texture_budget_update_period`,
-  `sc_aggregate_bvh_threshold`, `sc_layer_batch_threshold`. The stutter report behind this was withdrawn by its
-  author on 2026-10-15, so these just sit at Valve's defaults now, with no evidence either way.
-- **Round 4 (in `experimental`, 2026-10-16, build 6785)**, from
-  [the research report](research/reports/Deadlock%20FPS%20gains%20with%20good%20visuals.md):
-  - Added: `r_citadel_disable_particle_lights true` (new Valve convar; ability effects still show, they just stop
-    lighting the floor; toggle `0`/`1` live in the console to A/B), `csm_max_visible_dist 0` + `csm_cascade0-3_override_dist 0`
-    (sun-shadow pass off; the sun is already off), volume fog 64/64/48 (engine minimum).
-  - Fixed: `cl_ragdoll_limit -1` (Doorman's ult indicator is back), `snd_steamaudio_num_threads 2` (Valve default).
-  - Removed (dead or wrong): `r_update_particles_on_render_only_frames`, `thread_pool_option` (hybrid Intel CPUs only),
-    `snd_mixahead 0.05` (up to 50 ms later audio), the duplicate `sc_layer_batch_threshold_fullsort 120` and
-    `snd_ui_positional false`, `lb_csm_override_staticgeo_cascades_value "true"` (parse error), `volume_fog_enable_jitter`,
-    `lb_cubemap_normalization_roughness_begin`, `r_texture_stream_mip_bias` (`video.txt` wins).
-  - New `experimental/video.txt`: puts the RTX 5070's idle fight-time capacity into looks: DLAA, mip bias 0,
-    `shaderquality 1`, soft particles, area lights, correct `mem_level 2` / `gpu_mem_level 3`. Shadow cuts and particle
-    fallbacks stay. 12 keys that no longer exist in the game were deleted (`r_render_portals`, `r_reduce_flash`, …).
-    **Fill in your own VendorID, DeviceID and resolution before using it.** If fights lose FPS, revert in this order:
-    DLAA → FXAA (`r_citadel_upscaling 0`), then `shaderquality 0`, then `r_particle_depth_feathering false`.
-- **Result (2026-10-20, rounds 2–5 together, with mods via DMM): about −40 FPS vs stable. Not recommended; use stable.**
-  Not split further, so it's unknown whether `video.txt` (DLAA at full render scale) or the `gameinfo.gi` changes cost the FPS.
-
-## Top actions outside the cfg (details in research/RESEARCH.md)
-
-1. **FPS mods:** Screenspace Particle Disabler ("Clutter be Gone"), Optimized Soul Container, Vindicta Scope Downscale.
-2. **`video.txt`:** pick an upscaler that fits your GPU (see "Setting up `video.txt`" above).
-3. **Windows/driver:** shader cache 10 GB or Unlimited, HAGS on, windowed optimizations on, unused overlays off. Optionally SMT off.
-4. **Renderer:** stay on DX11 unless `-vulkan` measurably beats it on your PC.
+- [apex-complock/NOTES.md](apex-complock/NOTES.md): results and test plan for the main config.
+- [research/RESEARCH.md](research/RESEARCH.md): what still gives FPS (mods, `video.txt`, Windows), and what doesn't.
+- [research/HISTORY.md](research/HISTORY.md): how the cfg became mod compatible, and old experiments.
+- `tools/lint.py`: after a game update, run
+  `python3 tools/lint.py apex-complock/gameinfo.gi --video apex-complock/video.txt` to find lines that no longer work.
+- Retired configs live on branches: [`archive/alz`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz),
+  [`archive/alz-experimental`](https://github.com/alzzzik/alz-deadlock-cfg/tree/archive/alz-experimental),
+  [`experimental`](https://github.com/alzzzik/alz-deadlock-cfg/tree/experimental).
 
 ## Credits
 
-- **liv** ([7liv/compylock](https://github.com/7liv/compylock)): the original cfg this one started from.
-- [dacooderr / OptiLock](https://github.com/dacooderr/OptiLock): used as the mod-compatible reference.
-- [Sqooky / OptimizationLock](https://github.com/Sqooky/OptimizationLock): the config family liv's cfg comes from.
-- Research help: [Deadlock Mod Manager](https://github.com/deadlock-mod-manager/deadlock-mod-manager) perf catalog,
-  [ghempy53/deadlock-config](https://github.com/ghempy53/deadlock-config) (measured A/B tests),
-  [simulieren/deadtune](https://github.com/simulieren/deadtune).
-
-Both upstream projects are GPL-3.0, so this repo is too (see `LICENSE`).
+Started from liv's [compylock](https://github.com/7liv/compylock), part of the
+[OptimizationLock](https://github.com/Sqooky/OptimizationLock) family, with
+[OptiLock](https://github.com/dacooderr/OptiLock) as the mod-compatible reference. Research help from the
+[Deadlock Mod Manager](https://github.com/deadlock-mod-manager/deadlock-mod-manager) perf catalog,
+[ghempy53/deadlock-config](https://github.com/ghempy53/deadlock-config) and
+[simulieren/deadtune](https://github.com/simulieren/deadtune). GPL-3.0, like the upstream projects.
